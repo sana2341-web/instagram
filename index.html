@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Instagram Downloader - No Watermark | Free Tool</title>
+    <meta name="description" content="Download Instagram videos, photos, reels, and stories without watermark for free. High quality, no login required.">
+    <meta name="keywords" content="instagram downloader, video downloader, photo downloader, no watermark, instagram saver, reel downloader">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(145deg, #0b1120 0%, #1a2332 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 960px;
+            width: 100%;
+            background: rgba(22, 34, 50, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 2.5rem 2.5rem 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(225, 48, 108, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(193, 53, 132, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .logo-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .logo-wrapper .icon-box {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 12px 30px -8px rgba(225, 48, 108, 0.4);
+        }
+
+        .header h1 {
+            font-size: 2.6rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #f0f9ff 0%, #b6d4fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            color: #94a3b8;
+            margin-top: 0.5rem;
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
+
+        .header .badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #b9c9e0;
+        }
+
+        .badge i {
+            color: #f472b6;
+        }
+
+        .badge.highlight {
+            background: rgba(225, 48, 108, 0.12);
+            border-color: rgba(225, 48, 108, 0.2);
+            color: #f472b6;
+        }
+
+        .badge.highlight i {
+            color: #e1306c;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 1.5rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f0f9ff, #b6d4fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-item .label {
+            font-size: 0.65rem;
+            color: #6f87a5;
+            margin-top: 0.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Main Card */
+        .main-card {
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-card .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #eef2f6;
+            margin-bottom: 1rem;
+        }
+
+        .main-card .section-title i {
+            color: #e1306c;
+        }
+
+        /* URL Input */
+        .url-input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            background: rgba(17, 28, 43, 0.6);
+            border-radius: 80px;
+            padding: 0.3rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .url-input-group input {
+            flex: 1 1 200px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            border: none;
+            background: transparent;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            outline: none;
+            font-family: inherit;
+            min-width: 150px;
+        }
+
+        .url-input-group input::placeholder {
+            color: #5f7390;
+            font-weight: 400;
+        }
+
+        .url-input-group .btn-primary {
+            background: linear-gradient(145deg, #e1306c, #c13584);
+            border: none;
+            padding: 0.8rem 2.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px -8px rgba(225, 48, 108, 0.4);
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .url-input-group .btn-primary:hover {
+            transform: scale(1.02);
+            background: linear-gradient(145deg, #f13a76, #d13a8f);
+            box-shadow: 0 12px 28px -8px rgba(225, 48, 108, 0.6);
+        }
+
+        .url-input-group .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Quick Examples */
+        .quick-section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem;
+            margin: 1rem 0 1.5rem 0;
+        }
+
+        .quick-section .label {
+            font-size: 0.75rem;
+            color: #6f87a5;
+            font-weight: 500;
+        }
+
+        .quick-link {
+            background: rgba(45, 59, 79, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 0.35rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #b9c9e0;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .quick-link:hover {
+            background: #2c3f58;
+            color: #f0f6ff;
+            border-color: #4b6a8b;
+            transform: translateY(-1px);
+        }
+
+        .quick-link i {
+            margin-right: 0.3rem;
+            font-size: 0.6rem;
+            color: #f472b6;
+        }
+
+        /* Content Type Grid */
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.8rem;
+            margin: 1.2rem 0 1.8rem 0;
+        }
+
+        .type-card {
+            background: rgba(20, 32, 48, 0.4);
+            border-radius: 1rem;
+            padding: 0.8rem 0.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: 0.2s;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+
+        .type-card:hover {
+            background: rgba(20, 32, 48, 0.7);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .type-card.active {
+            border-color: #e1306c;
+            background: rgba(225, 48, 108, 0.08);
+            box-shadow: 0 0 0 1px #e1306c, 0 8px 20px -8px #831843;
+        }
+
+        .type-card i {
+            font-size: 1.4rem;
+            color: #94a3b8;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+        .type-card.active i {
+            color: #f472b6;
+        }
+
+        .type-card h4 {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #e8edf5;
+        }
+
+        .type-card p {
+            font-size: 0.55rem;
+            color: #7f93b0;
+            font-weight: 400;
+        }
+
+        /* Result Area */
+        #resultArea {
+            margin-top: 1.5rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        #resultArea.show {
+            display: flex;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 1.1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: #1e2f44;
+            color: #b9c9e0;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .status.loading {
+            background: #2d3b4f;
+            color: #d1dff0;
+            animation: pulse 1.4s infinite;
+        }
+
+        .status.success {
+            background: #065f46;
+            color: #a7f3d0;
+            border-color: #34d399;
+        }
+
+        .status.error {
+            background: #7f1d1d;
+            color: #fca5a5;
+            border-color: #ef4444;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .preview-box {
+            background: #0a121e;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #253343;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+            min-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .preview-box img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .preview-box video {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            display: block;
+            background: #000;
+        }
+
+        .preview-box .placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            color: #4b617e;
+            text-align: center;
+        }
+
+        .preview-box .placeholder i {
+            font-size: 3.5rem;
+            opacity: 0.3;
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .preview-box .placeholder span {
+            font-size: 0.9rem;
+            max-width: 300px;
+        }
+
+        .loader-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #2d405a;
+            border-top: 4px solid #e1306c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .preview-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            color: white;
+            font-size: 0.8rem;
+            pointer-events: none;
+        }
+
+        .preview-caption .user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .preview-caption .user i {
+            color: #e1306c;
+            font-size: 0.9rem;
+        }
+
+        /* Download Actions */
+        .download-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-download {
+            background: linear-gradient(145deg, #059669, #047857);
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-download:hover:not(:disabled) {
+            transform: scale(1.02);
+            background: linear-gradient(145deg, #10b981, #059669);
+        }
+
+        .btn-download:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-download i {
+            font-size: 1rem;
+        }
+
+        .btn-secondary {
+            background: rgba(45, 59, 79, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #d1dff0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(45, 59, 79, 0.8);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .feature-item i {
+            font-size: 1.3rem;
+            color: #f472b6;
+            margin-bottom: 0.3rem;
+        }
+
+        .feature-item h5 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #e8edf5;
+        }
+
+        .feature-item p {
+            font-size: 0.6rem;
+            color: #6f87a5;
+            margin-top: 0.1rem;
+        }
+
+        /* Hyperlink Section - Combined Links */
+        .hyperlink-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem 1.5rem;
+        }
+
+        .hyperlink-section .link-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem 1rem;
+        }
+
+        .hyperlink-section .group-label {
+            font-size: 0.6rem;
+            color: #4a617c;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .hyperlink-section a {
+            color: #93b4e6;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: 0.2s;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+        }
+
+        .hyperlink-section a:hover {
+            color: #c7d9f5;
+            background: rgba(96, 165, 250, 0.08);
+            border-color: rgba(96, 165, 250, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .hyperlink-section a i {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .hyperlink-section a .fa-instagram {
+            color: #e1306c;
+        }
+
+        .hyperlink-section a .fa-youtube {
+            color: #ff0000;
+        }
+
+        .hyperlink-section a .fa-twitter {
+            color: #1da1f2;
+        }
+
+        .hyperlink-section a .fa-tiktok {
+            color: #000000;
+            text-shadow: 0 0 2px #00f2ea, 0 0 2px #fe2c55;
+        }
+
+        .hyperlink-section a .fa-facebook {
+            color: #1877f2;
+        }
+
+        .hyperlink-section a .fa-pinterest {
+            color: #e60023;
+        }
+
+        .hyperlink-section a .fa-snapchat {
+            color: #fffc00;
+        }
+
+        .hyperlink-section .divider {
+            color: #2d3b4f;
+            font-size: 0.6rem;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: #4a617c;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer span i {
+            margin-right: 0.2rem;
+            opacity: 0.6;
+        }
+
+        .footer a {
+            color: #6f87a5;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer a:hover {
+            color: #b9c9e0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.8rem 1.5rem 2rem;
+                border-radius: 1.8rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .logo-wrapper .icon-box {
+                width: 48px;
+                height: 48px;
+                font-size: 1.5rem;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 1rem;
+            }
+
+            .url-input-group {
+                border-radius: 60px;
+                padding: 0.2rem;
+            }
+
+            .url-input-group input {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.85rem;
+            }
+
+            .url-input-group .btn-primary {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.85rem;
+            }
+
+            .type-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+
+            .preview-box {
+                min-height: 220px;
+            }
+
+            .quick-link {
+                font-size: 0.6rem;
+                padding: 0.25rem 0.7rem;
+            }
+
+            .hyperlink-section {
+                gap: 0.6rem 1rem;
+            }
+
+            .hyperlink-section a {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.5rem;
+            }
+
+            .hyperlink-section .group-label {
+                font-size: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.2rem 1rem 1.5rem;
+                border-radius: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header .subtitle {
+                font-size: 0.85rem;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+                padding: 0.8rem;
+            }
+
+            .stat-item .number {
+                font-size: 1.2rem;
+            }
+
+            .url-input-group {
+                flex-direction: column;
+                border-radius: 30px;
+                background: transparent;
+                padding: 0;
+                border: none;
+                gap: 0.5rem;
+            }
+
+            .url-input-group input {
+                background: rgba(17, 28, 43, 0.8);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 30px;
+                padding: 0.8rem 1.2rem;
+                width: 100%;
+            }
+
+            .url-input-group .btn-primary {
+                width: 100%;
+                justify-content: center;
+                padding: 0.8rem;
+                border-radius: 30px;
+            }
+
+            .type-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .download-actions {
+                flex-direction: column;
+            }
+
+            .btn-download,
+            .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+
+            .hyperlink-section {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.4rem;
+            }
+
+            .hyperlink-section .link-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-wrapper">
+                <div class="icon-box">
+                    <i class="fab fa-instagram"></i>
+                </div>
+                <h1>Instagram Downloader</h1>
+            </div>
+            <p class="subtitle">Download videos, photos, reels & stories — <strong>no watermark</strong>, no login required</p>
+            <div class="badges">
+                <span class="badge highlight"><i class="fas fa-check-circle"></i> 100% Free</span>
+                <span class="badge"><i class="fas fa-image"></i> HD Quality</span>
+                <span class="badge"><i class="fas fa-bolt"></i> Fast Download</span>
+                <span class="badge"><i class="fas fa-shield-alt"></i> Privacy Safe</span>
+            </div>
+        </header>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="number">2.4M+</div>
+                <div class="label">Downloads</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">500K+</div>
+                <div class="label">Active Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">4.9★</div>
+                <div class="label">User Rating</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">100%</div>
+                <div class="label">No Watermark</div>
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="main-card">
+
+            <div class="section-title">
+                <i class="fas fa-download"></i> Paste Instagram URL
+            </div>
+
+            <!-- URL Input -->
+            <div class="url-input-group">
+                <input type="text" id="urlInput" placeholder="https://www.instagram.com/p/..." value="https://www.instagram.com/p/C7YxTkOKl1s/">
+                <button class="btn-primary" id="fetchBtn">
+                    <i class="fas fa-search"></i> Fetch & Download
+                </button>
+            </div>
+
+            <!-- Quick Examples -->
+            <div class="quick-section">
+                <span class="label"><i class="fas fa-bolt"></i> Try:</span>
+                <button class="quick-link" data-url="https://www.instagram.com/p/C7YxTkOKl1s/">
+                    <i class="fas fa-image"></i> Photo
+                </button>
+                <button class="quick-link" data-url="https://www.instagram.com/reel/C8XpLpNIVwV/">
+                    <i class="fas fa-video"></i> Reel
+                </button>
+                <button class="quick-link" data-url="https://www.instagram.com/p/C8XqLpNIVwV/">
+                    <i class="fas fa-images"></i> Carousel
+                </button>
+                <button class="quick-link" data-url="https://www.instagram.com/stories/instagram/123456789/">
+                    <i class="fas fa-clock"></i> Story
+                </button>
+            </div>
+
+            <!-- Content Type Selection -->
+            <div style="font-size:0.75rem;color:#6f87a5;margin-bottom:0.5rem;">
+                <i class="fas fa-tag"></i> Content type:
+            </div>
+            <div class="type-grid">
+                <div class="type-card active" data-type="all">
+                    <i class="fas fa-photo-video"></i>
+                    <h4>All</h4>
+                    <p>Auto-detect</p>
+                </div>
+                <div class="type-card" data-type="photo">
+                    <i class="fas fa-image"></i>
+                    <h4>Photo</h4>
+                    <p>High res</p>
+                </div>
+                <div class="type-card" data-type="video">
+                    <i class="fas fa-video"></i>
+                    <h4>Video</h4>
+                    <p>HD quality</p>
+                </div>
+                <div class="type-card" data-type="carousel">
+                    <i class="fas fa-images"></i>
+                    <h4>Carousel</h4>
+                    <p>Multiple</p>
+                </div>
+                <div class="type-card" data-type="story">
+                    <i class="fas fa-clock"></i>
+                    <h4>Story</h4>
+                    <p>24h content</p>
+                </div>
+            </div>
+
+            <!-- Result Area -->
+            <div id="resultArea">
+                <div class="status-bar">
+                    <div id="statusBadge" class="status">⏳ Processing...</div>
+                </div>
+                <div class="preview-box" id="previewBox">
+                    <div class="placeholder">
+                        <i class="fab fa-instagram"></i>
+                        <span>Your Instagram content will appear here</span>
+                    </div>
+                </div>
+                <div class="download-actions">
+                    <button class="btn-download" id="downloadBtn" disabled>
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button class="btn-secondary" id="copyBtn">
+                        <i class="fas fa-copy"></i> Copy URL
+                    </button>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features">
+                <div class="feature-item">
+                    <i class="fas fa-water"></i>
+                    <h5>No Watermark</h5>
+                    <p>Clean content, no logo</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-hdmi"></i>
+                    <h5>HD Quality</h5>
+                    <p>High resolution download</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-bolt"></i>
+                    <h5>Fast & Free</h5>
+                    <p>Instant downloads</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h5>Mobile Ready</h5>
+                    <p>Works on all devices</p>
+                </div>
+            </div>
+
+            <!-- HYPERLINK SECTION - Combined Links -->
+            <div class="hyperlink-section">
+                <div class="link-group">
+                    <span class="group-label"><i class="fas fa-link"></i> Social:</span>
+                    <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-youtube"></i> YouTube
+                    </a>
+                    <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-tiktok"></i> TikTok
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </a>
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </a>
+                </div>
+                <div class="link-group">
+                    <span class="group-label"><i class="fas fa-tools"></i> Tools:</span>
+                    <a href="#" onclick="alert('Video Bypass Tool coming soon!')">
+                        <i class="fas fa-video"></i> Video Bypass
+                    </a>
+                    <a href="#" onclick="alert('Photo Enhancer coming soon!')">
+                        <i class="fas fa-magic"></i> Photo Enhancer
+                    </a>
+                    <a href="#" onclick="alert('Story Saver coming soon!')">
+                        <i class="fas fa-clock"></i> Story Saver
+                    </a>
+                </div>
+                <div class="link-group">
+                    <span class="group-label"><i class="fas fa-share-alt"></i> Share:</span>
+                    <a href="#" onclick="shareTool()">
+                        <i class="fas fa-share"></i> Share
+                    </a>
+                    <a href="#" onclick="window.print()">
+                        <i class="fas fa-print"></i> Print
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <span><i class="fas fa-shield-alt"></i> No data stored</span>
+            <span><i class="fas fa-check-circle"></i> 100% free tool</span>
+            <span><i class="fas fa-lock"></i> Privacy first</span>
+            <span><i class="fas fa-heart" style="color:#e1306c;"></i> Made with love</span>
+        </div>
+
+    </div>
+
+    <script>
+        (function() {
+            // DOM references
+            const urlInput = document.getElementById('urlInput');
+            const fetchBtn = document.getElementById('fetchBtn');
+            const resultArea = document.getElementById('resultArea');
+            const statusBadge = document.getElementById('status
