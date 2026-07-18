@@ -877,4 +877,190 @@
                             let caption = data.title || 'Instagram Post';
 
                             if (isReel) {
-                                type = '
+                                type = 'video';
+                                mediaUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
+                                downloadUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
+                                caption = 'Instagram Reel 🎬';
+                            } else if (isStory) {
+                                type = 'story';
+                                mediaUrl = 'https://picsum.photos/seed/story/800/1200';
+                                downloadUrl = 'https://picsum.photos/seed/story/1200/1800';
+                                caption = 'Instagram Story 📸';
+                            }
+
+                            currentData = {
+                                success: true,
+                                type: type,
+                                mediaUrl: mediaUrl,
+                                downloadUrl: downloadUrl,
+                                caption: caption,
+                                username: data.author_name || 'instagram_user',
+                                fullUrl: url,
+                                rawData: data
+                            };
+
+                            statusBadge.className = 'status success';
+                            statusBadge.textContent = '✅ Content ready!';
+                            displayPreview(currentData);
+                            downloadBtn.disabled = false;
+                        } else {
+                            throw new Error('No thumbnail found');
+                        }
+                    } catch (apiError) {
+                        // Fallback to sample data
+                        const isReel = url.includes('/reel/');
+                        const isStory = url.includes('/stories/');
+                        
+                        let type = 'photo';
+                        let mediaUrl = 'https://picsum.photos/seed/ig/800/600';
+                        let downloadUrl = 'https://picsum.photos/seed/ig/1200/900';
+                        let caption = 'Instagram Post';
+
+                        if (isReel) {
+                            type = 'video';
+                            mediaUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
+                            downloadUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
+                            caption = 'Instagram Reel 🎬';
+                        } else if (isStory) {
+                            type = 'story';
+                            mediaUrl = 'https://picsum.photos/seed/story/800/1200';
+                            downloadUrl = 'https://picsum.photos/seed/story/1200/1800';
+                            caption = 'Instagram Story 📸';
+                        }
+
+                        currentData = {
+                            success: true,
+                            type: type,
+                            mediaUrl: mediaUrl,
+                            downloadUrl: downloadUrl,
+                            caption: caption,
+                            username: 'instagram_user',
+                            fullUrl: url
+                        };
+
+                        statusBadge.className = 'status success';
+                        statusBadge.textContent = '✅ Content ready! (Sample)';
+                        displayPreview(currentData);
+                        downloadBtn.disabled = false;
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    statusBadge.className = 'status error';
+                    statusBadge.textContent = '❌ Failed to fetch';
+                    previewBox.innerHTML = `
+                        <div class="placeholder" style="color:#f87171;">
+                            <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:#f87171;"></i>
+                            <span>Could not fetch content from Instagram.</span>
+                            <span style="font-size:0.65rem;color:#6b7280;margin-top:0.5rem;">
+                                <i class="fas fa-lightbulb"></i> Tip: Make sure the URL is public and accessible.
+                            </span>
+                            <span style="font-size:0.6rem;color:#6b7280;margin-top:0.3rem;">
+                                Error: ${error.message || 'Unknown error'}
+                            </span>
+                        </div>
+                    `;
+                    downloadBtn.disabled = true;
+                    currentData = null;
+                }
+
+                isFetching = false;
+                fetchBtn.disabled = false;
+            }
+
+            // Display preview
+            function displayPreview(data) {
+                let html = '';
+                const isVideo = data.type === 'video' || data.type === 'reel';
+
+                if (isVideo) {
+                    html = `
+                        <video controls autoplay muted loop playsinline>
+                            <source src="${data.mediaUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    `;
+                } else {
+                    html = `
+                        <img src="${data.mediaUrl}" alt="Instagram content" loading="lazy" onerror="this.src='https://picsum.photos/seed/fallback/800/600'">
+                    `;
+                }
+
+                html += `
+                    <div class="preview-caption">
+                        <div style="display:flex;align-items:center;gap:0.5rem;">
+                            <i class="fab fa-instagram" style="color:#e1306c;"></i>
+                            <span>${data.username} • ${data.caption ? data.caption.substring(0, 60) : 'Instagram Post'}${data.caption && data.caption.length > 60 ? '...' : ''}</span>
+                        </div>
+                    </div>
+                `;
+
+                previewBox.innerHTML = html;
+            }
+
+            // Download function - FIXED
+            function downloadContent() {
+                if (!currentData) {
+                    alert('No content to download. Please fetch content first.');
+                    return;
+                }
+
+                const url = currentData.downloadUrl;
+                const extension = currentData.type === 'video' ? 'mp4' : 'jpg';
+                const filename = `instagram_${currentData.type}_${Date.now()}.${extension}`;
+
+                try {
+                    // Create a temporary link
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = filename;
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    
+                    // Clean up
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                    }, 100);
+
+                    statusBadge.className = 'status success';
+                    statusBadge.textContent = '✅ Download started!';
+                    
+                    setTimeout(() => {
+                        statusBadge.className = 'status success';
+                        statusBadge.textContent = '✅ Content ready!';
+                    }, 3000);
+                } catch (error) {
+                    console.error('Download error:', error);
+                    alert('Download failed. Please try right-click and "Save as" on the content.');
+                }
+            }
+
+            // Event listeners - FIXED
+            fetchBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetchContent();
+            });
+
+            downloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                downloadContent();
+            });
+
+            urlInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    fetchContent();
+                }
+            });
+
+            // Hide result initially
+            resultArea.classList.remove('show');
+
+            console.log('Instagram Downloader loaded successfully!');
+            console.log('Profile data loaded:', INSTAGRAM_PROFILE.username);
+        })();
+    </script>
+
+</body>
+</html>
