@@ -598,43 +598,28 @@
             margin-top: 0.1rem;
         }
 
-        /* Hyperlink Section - Combined Links */
+        /* Hyperlink Section */
         .hyperlink-section {
             margin-top: 2rem;
             padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 0.8rem 1.5rem;
-        }
-
-        .hyperlink-section .link-group {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5rem 1rem;
-        }
-
-        .hyperlink-section .group-label {
-            font-size: 0.6rem;
-            color: #4a617c;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 600;
+            gap: 1.2rem 2rem;
         }
 
         .hyperlink-section a {
             color: #93b4e6;
             text-decoration: none;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.4rem;
             transition: 0.2s;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid transparent;
         }
@@ -647,42 +632,12 @@
         }
 
         .hyperlink-section a i {
-            font-size: 0.75rem;
+            font-size: 0.9rem;
             opacity: 0.7;
         }
 
-        .hyperlink-section a .fa-instagram {
+        .hyperlink-section a .ig-icon {
             color: #e1306c;
-        }
-
-        .hyperlink-section a .fa-youtube {
-            color: #ff0000;
-        }
-
-        .hyperlink-section a .fa-twitter {
-            color: #1da1f2;
-        }
-
-        .hyperlink-section a .fa-tiktok {
-            color: #000000;
-            text-shadow: 0 0 2px #00f2ea, 0 0 2px #fe2c55;
-        }
-
-        .hyperlink-section a .fa-facebook {
-            color: #1877f2;
-        }
-
-        .hyperlink-section a .fa-pinterest {
-            color: #e60023;
-        }
-
-        .hyperlink-section a .fa-snapchat {
-            color: #fffc00;
-        }
-
-        .hyperlink-section .divider {
-            color: #2d3b4f;
-            font-size: 0.6rem;
         }
 
         /* Footer */
@@ -770,16 +725,12 @@
             }
 
             .hyperlink-section {
-                gap: 0.6rem 1rem;
+                gap: 0.8rem 1.2rem;
             }
 
             .hyperlink-section a {
-                font-size: 0.65rem;
-                padding: 0.15rem 0.5rem;
-            }
-
-            .hyperlink-section .group-label {
-                font-size: 0.5rem;
+                font-size: 0.7rem;
+                padding: 0.2rem 0.6rem;
             }
         }
 
@@ -857,11 +808,7 @@
             .hyperlink-section {
                 flex-direction: column;
                 align-items: center;
-                gap: 0.4rem;
-            }
-
-            .hyperlink-section .link-group {
-                justify-content: center;
+                gap: 0.6rem;
             }
         }
     </style>
@@ -1016,47 +963,26 @@
                 </div>
             </div>
 
-            <!-- HYPERLINK SECTION - Combined Links -->
+            <!-- Hyperlink Section -->
             <div class="hyperlink-section">
-                <div class="link-group">
-                    <span class="group-label"><i class="fas fa-link"></i> Social:</span>
-                    <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </a>
-                    <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-youtube"></i> YouTube
-                    </a>
-                    <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-tiktok"></i> TikTok
-                    </a>
-                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-facebook"></i> Facebook
-                    </a>
-                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-twitter"></i> Twitter
-                    </a>
-                </div>
-                <div class="link-group">
-                    <span class="group-label"><i class="fas fa-tools"></i> Tools:</span>
-                    <a href="#" onclick="alert('Video Bypass Tool coming soon!')">
-                        <i class="fas fa-video"></i> Video Bypass
-                    </a>
-                    <a href="#" onclick="alert('Photo Enhancer coming soon!')">
-                        <i class="fas fa-magic"></i> Photo Enhancer
-                    </a>
-                    <a href="#" onclick="alert('Story Saver coming soon!')">
-                        <i class="fas fa-clock"></i> Story Saver
-                    </a>
-                </div>
-                <div class="link-group">
-                    <span class="group-label"><i class="fas fa-share-alt"></i> Share:</span>
-                    <a href="#" onclick="shareTool()">
-                        <i class="fas fa-share"></i> Share
-                    </a>
-                    <a href="#" onclick="window.print()">
-                        <i class="fas fa-print"></i> Print
-                    </a>
-                </div>
+                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-instagram ig-icon"></i> Instagram
+                </a>
+                <a href="https://www.instagram.com/reels" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-video" style="color:#f472b6;"></i> Reels
+                </a>
+                <a href="https://www.instagram.com/explore" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-compass" style="color:#60a5fa;"></i> Explore
+                </a>
+                <a href="https://www.instagram.com/stories" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-clock" style="color:#fbbf24;"></i> Stories
+                </a>
+                <a href="https://www.instagram.com/direct/inbox" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-envelope" style="color:#34d399;"></i> Messages
+                </a>
+                <a href="https://www.instagram.com/accounts/login" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-sign-in-alt" style="color:#94a3b8;"></i> Login
+                </a>
             </div>
 
         </div>
@@ -1084,29 +1010,6 @@
 
             let selectedType = 'all';
             let currentData = null;
-
-            // Share function
-            window.shareTool = function() {
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Instagram Downloader - No Watermark',
-                        text: 'Download Instagram videos, photos, reels & stories without watermark for free!',
-                        url: window.location.href
-                    }).catch(() => {});
-                } else {
-                    // Fallback
-                    const text = 'Check out this Instagram Downloader tool! Download videos, photos, reels & stories without watermark for free.';
-                    if (navigator.clipboard) {
-                        navigator.clipboard.writeText(text + ' ' + window.location.href).then(() => {
-                            alert('Link copied to clipboard! Share it with your friends.');
-                        }).catch(() => {
-                            prompt('Copy this link to share:', window.location.href);
-                        });
-                    } else {
-                        prompt('Copy this link to share:', window.location.href);
-                    }
-                }
-            };
 
             // Content type selection
             document.querySelectorAll('.type-card').forEach(card => {
@@ -1172,149 +1075,3 @@
                     </div>
                 `;
                 downloadBtn.disabled = true;
-
-                // Simulate API delay
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
-                // Generate mock data
-                const mockData = generateMockData(url);
-                currentData = mockData;
-
-                if (mockData.success) {
-                    statusBadge.className = 'status success';
-                    statusBadge.textContent = '✅ Content ready!';
-                    displayPreview(mockData);
-                    downloadBtn.disabled = false;
-                } else {
-                    statusBadge.className = 'status error';
-                    statusBadge.textContent = '❌ Failed to fetch';
-                    previewBox.innerHTML = `
-                        <div class="placeholder" style="color:#f87171;">
-                            <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:#f87171;"></i>
-                            <span>Could not fetch content. Please check the URL and try again.</span>
-                            <span style="font-size:0.65rem;color:#6b7280;">Note: This is a demo version.</span>
-                        </div>
-                    `;
-                    downloadBtn.disabled = true;
-                    currentData = null;
-                }
-            }
-
-            // Generate mock data
-            function generateMockData(url) {
-                const isReel = url.includes('/reel/');
-                const isStory = url.includes('/stories/');
-                const isCarousel = url.includes('/p/') && !isReel;
-
-                let type = 'photo';
-                let mediaUrl = 'https://picsum.photos/seed/ig/800/600';
-                let downloadUrl = 'https://picsum.photos/seed/ig/1200/900';
-                let caption = 'Amazing Instagram content! #instagram';
-
-                if (isReel) {
-                    type = 'video';
-                    mediaUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
-                    downloadUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
-                    caption = 'Awesome reel! 🎬 #reels #viral';
-                } else if (isStory) {
-                    type = 'story';
-                    mediaUrl = 'https://picsum.photos/seed/story/800/1200';
-                    downloadUrl = 'https://picsum.photos/seed/story/1200/1800';
-                    caption = 'Instagram Story 📸';
-                } else if (isCarousel) {
-                    type = 'carousel';
-                    mediaUrl = 'https://picsum.photos/seed/carousel/800/600';
-                    downloadUrl = 'https://picsum.photos/seed/carousel/1200/900';
-                    caption = 'Check out this carousel! 📸';
-                }
-
-                return {
-                    success: true,
-                    type: type,
-                    mediaUrl: mediaUrl,
-                    downloadUrl: downloadUrl,
-                    caption: caption,
-                    username: '@instagram_user',
-                    fullUrl: url
-                };
-            }
-
-            // Display preview
-            function displayPreview(data) {
-                let html = '';
-                const isVideo = data.type === 'video' || data.type === 'reel';
-
-                if (isVideo) {
-                    html = `
-                        <video controls autoplay muted loop playsinline>
-                            <source src="${data.mediaUrl}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    `;
-                } else {
-                    html = `
-                        <img src="${data.mediaUrl}" alt="Instagram content" loading="lazy">
-                    `;
-                }
-
-                // Add caption overlay
-                html += `
-                    <div class="preview-caption">
-                        <div class="user">
-                            <i class="fab fa-instagram"></i>
-                            <span>${data.username}</span>
-                            <span style="opacity:0.6;font-size:0.7rem;">•</span>
-                            <span style="opacity:0.8;">${data.caption.substring(0, 50)}${data.caption.length > 50 ? '...' : ''}</span>
-                        </div>
-                    </div>
-                `;
-
-                previewBox.innerHTML = html;
-            }
-
-            // Download function
-            function downloadContent() {
-                if (!currentData) return;
-
-                const url = currentData.downloadUrl;
-                const filename = `instagram_${currentData.type}_${Date.now()}.${currentData.type === 'video' ? 'mp4' : 'jpg'}`;
-
-                // For demo, open in new tab
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = filename;
-                link.target = '_blank';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                // Show notification
-                statusBadge.className = 'status success';
-                statusBadge.textContent = '✅ Download started!';
-                setTimeout(() => {
-                    statusBadge.className = 'status success';
-                    statusBadge.textContent = '✅ Content ready!';
-                }, 2000);
-            }
-
-            // Event listeners
-            fetchBtn.addEventListener('click', fetchContent);
-            downloadBtn.addEventListener('click', downloadContent);
-
-            urlInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    fetchContent();
-                }
-            });
-
-            // Hide result initially
-            resultArea.classList.remove('show');
-
-            console.log('Instagram Downloader loaded successfully!');
-            console.log('Note: This is a demo version. For real downloads, integrate with Instagram API.');
-        })();
-    </script>
-
-</body>
-</html>
