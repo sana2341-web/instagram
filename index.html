@@ -1077,4 +1077,244 @@
             const urlInput = document.getElementById('urlInput');
             const fetchBtn = document.getElementById('fetchBtn');
             const resultArea = document.getElementById('resultArea');
-            const statusBadge = document.getElementById('status
+            const statusBadge = document.getElementById('statusBadge');
+            const previewBox = document.getElementById('previewBox');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const copyBtn = document.getElementById('copyBtn');
+
+            let selectedType = 'all';
+            let currentData = null;
+
+            // Share function
+            window.shareTool = function() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Instagram Downloader - No Watermark',
+                        text: 'Download Instagram videos, photos, reels & stories without watermark for free!',
+                        url: window.location.href
+                    }).catch(() => {});
+                } else {
+                    // Fallback
+                    const text = 'Check out this Instagram Downloader tool! Download videos, photos, reels & stories without watermark for free.';
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(text + ' ' + window.location.href).then(() => {
+                            alert('Link copied to clipboard! Share it with your friends.');
+                        }).catch(() => {
+                            prompt('Copy this link to share:', window.location.href);
+                        });
+                    } else {
+                        prompt('Copy this link to share:', window.location.href);
+                    }
+                }
+            };
+
+            // Content type selection
+            document.querySelectorAll('.type-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedType = this.dataset.type;
+                });
+            });
+
+            // Quick link clicks
+            document.querySelectorAll('.quick-link').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const url = this.dataset.url;
+                    if (url) {
+                        urlInput.value = url;
+                        setTimeout(() => fetchContent(), 300);
+                    }
+                });
+            });
+
+            // Copy URL
+            copyBtn.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                if (url) {
+                    navigator.clipboard.writeText(url).then(() => {
+                        const original = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => { this.innerHTML = original; }, 2000);
+                    }).catch(() => {
+                        const textArea = document.createElement('textarea');
+                        textArea.value = url;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        alert('URL copied!');
+                    });
+                }
+            });
+
+            // Main fetch function
+            async function fetchContent() {
+                const url = urlInput.value.trim();
+                if (!url) {
+                    alert('Please enter an Instagram URL.');
+                    return;
+                }
+
+                if (!url.includes('instagram.com')) {
+                    alert('Please enter a valid Instagram URL.');
+                    return;
+                }
+
+                // Show result area with loading state
+                resultArea.classList.add('show');
+                statusBadge.className = 'status loading';
+                statusBadge.textContent = '⏳ Fetching content...';
+                previewBox.innerHTML = `
+                    <div class="placeholder">
+                        <div class="loader-spinner"></div>
+                        <span>Fetching Instagram content...</span>
+                    </div>
+                `;
+                downloadBtn.disabled = true;
+
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Generate mock data
+                const mockData = generateMockData(url);
+                currentData = mockData;
+
+                if (mockData.success) {
+                    statusBadge.className = 'status success';
+                    statusBadge.textContent = '✅ Content ready!';
+                    displayPreview(mockData);
+                    downloadBtn.disabled = false;
+                } else {
+                    statusBadge.className = 'status error';
+                    statusBadge.textContent = '❌ Failed to fetch';
+                    previewBox.innerHTML = `
+                        <div class="placeholder" style="color:#f87171;">
+                            <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:#f87171;"></i>
+                            <span>Could not fetch content. Please check the URL and try again.</span>
+                            <span style="font-size:0.65rem;color:#6b7280;">Note: This is a demo version.</span>
+                        </div>
+                    `;
+                    downloadBtn.disabled = true;
+                    currentData = null;
+                }
+            }
+
+            // Generate mock data
+            function generateMockData(url) {
+                const isReel = url.includes('/reel/');
+                const isStory = url.includes('/stories/');
+                const isCarousel = url.includes('/p/') && !isReel;
+
+                let type = 'photo';
+                let mediaUrl = 'https://picsum.photos/seed/ig/800/600';
+                let downloadUrl = 'https://picsum.photos/seed/ig/1200/900';
+                let caption = 'Amazing Instagram content! #instagram';
+
+                if (isReel) {
+                    type = 'video';
+                    mediaUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
+                    downloadUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
+                    caption = 'Awesome reel! 🎬 #reels #viral';
+                } else if (isStory) {
+                    type = 'story';
+                    mediaUrl = 'https://picsum.photos/seed/story/800/1200';
+                    downloadUrl = 'https://picsum.photos/seed/story/1200/1800';
+                    caption = 'Instagram Story 📸';
+                } else if (isCarousel) {
+                    type = 'carousel';
+                    mediaUrl = 'https://picsum.photos/seed/carousel/800/600';
+                    downloadUrl = 'https://picsum.photos/seed/carousel/1200/900';
+                    caption = 'Check out this carousel! 📸';
+                }
+
+                return {
+                    success: true,
+                    type: type,
+                    mediaUrl: mediaUrl,
+                    downloadUrl: downloadUrl,
+                    caption: caption,
+                    username: '@instagram_user',
+                    fullUrl: url
+                };
+            }
+
+            // Display preview
+            function displayPreview(data) {
+                let html = '';
+                const isVideo = data.type === 'video' || data.type === 'reel';
+
+                if (isVideo) {
+                    html = `
+                        <video controls autoplay muted loop playsinline>
+                            <source src="${data.mediaUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    `;
+                } else {
+                    html = `
+                        <img src="${data.mediaUrl}" alt="Instagram content" loading="lazy">
+                    `;
+                }
+
+                // Add caption overlay
+                html += `
+                    <div class="preview-caption">
+                        <div class="user">
+                            <i class="fab fa-instagram"></i>
+                            <span>${data.username}</span>
+                            <span style="opacity:0.6;font-size:0.7rem;">•</span>
+                            <span style="opacity:0.8;">${data.caption.substring(0, 50)}${data.caption.length > 50 ? '...' : ''}</span>
+                        </div>
+                    </div>
+                `;
+
+                previewBox.innerHTML = html;
+            }
+
+            // Download function
+            function downloadContent() {
+                if (!currentData) return;
+
+                const url = currentData.downloadUrl;
+                const filename = `instagram_${currentData.type}_${Date.now()}.${currentData.type === 'video' ? 'mp4' : 'jpg'}`;
+
+                // For demo, open in new tab
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Show notification
+                statusBadge.className = 'status success';
+                statusBadge.textContent = '✅ Download started!';
+                setTimeout(() => {
+                    statusBadge.className = 'status success';
+                    statusBadge.textContent = '✅ Content ready!';
+                }, 2000);
+            }
+
+            // Event listeners
+            fetchBtn.addEventListener('click', fetchContent);
+            downloadBtn.addEventListener('click', downloadContent);
+
+            urlInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    fetchContent();
+                }
+            });
+
+            // Hide result initially
+            resultArea.classList.remove('show');
+
+            console.log('Instagram Downloader loaded successfully!');
+            console.log('Note: This is a demo version. For real downloads, integrate with Instagram API.');
+        })();
+    </script>
+
+</body>
+</html>
