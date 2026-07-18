@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Instagram Downloader - No Watermark</title>
+    <meta name="description" content="Download Instagram videos, photos, reels, and stories without watermark for free.">
+    <meta name="keywords" content="instagram downloader, video downloader, photo downloader, no watermark, instagram saver">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(145deg, #0b1120 0%, #1a2332 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 920px;
+            width: 100%;
+            background: rgba(22, 34, 50, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 2rem 2rem 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .header .logo i {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #f0f9ff 0%, #b6d4fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #94a3b8;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background: rgba(225, 48, 108, 0.15);
+            color: #f472b6;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            border: 1px solid rgba(225, 48, 108, 0.2);
+        }
+
+        .main-card h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #eef2f6;
+            margin-bottom: 1.2rem;
+        }
+
+        .main-card h2 i {
+            color: #e1306c;
+        }
+
+        .url-input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .url-input-group input {
+            flex: 1 1 240px;
+            padding: 0.9rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid #2d3b4f;
+            background: #111c2b;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .url-input-group input:focus {
+            border-color: #e1306c;
+            box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.2);
+            background: #0f1a28;
+        }
+
+        .url-input-group input::placeholder {
+            color: #5f7390;
+            font-weight: 400;
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, #e1306c, #c13584);
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px -8px rgba(225, 48, 108, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: inherit;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            background: linear-gradient(145deg, #f13a76, #d13a8f);
+            box-shadow: 0 12px 28px -8px rgba(225, 48, 108, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: rgba(45, 59, 79, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #d1dff0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(45, 59, 79, 0.8);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 0.7rem;
+            margin: 0.8rem 0 1.5rem 0;
+        }
+
+        .quick-link {
+            background: rgba(45, 59, 79, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 0.35rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #b9c9e0;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: inherit;
+            background-image: linear-gradient(to bottom, #1e2c3f, #16212f);
+            white-space: nowrap;
+        }
+
+        .quick-link:hover {
+            background: #2c3f58;
+            color: #f0f6ff;
+            border-color: #4b6a8b;
+            transform: translateY(-1px);
+        }
+
+        .content-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.2rem 0 1.8rem 0;
+        }
+
+        .type-card {
+            background: rgba(20, 32, 48, 0.5);
+            border-radius: 1rem;
+            padding: 0.8rem 0.6rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: 0.2s;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+
+        .type-card.active {
+            border-color: #e1306c;
+            background: rgba(225, 48, 108, 0.08);
+            box-shadow: 0 0 0 1px #e1306c, 0 8px 20px -8px #831843;
+        }
+
+        .type-card i {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+        .type-card.active i {
+            color: #f472b6;
+        }
+
+        .type-card h4 {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #e8edf5;
+        }
+
+        .type-card p {
+            font-size: 0.6rem;
+            color: #7f93b0;
+            font-weight: 400;
+        }
+
+        #resultArea {
+            margin-top: 1.2rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        #resultArea.show {
+            display: flex;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.3rem 1.1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: #1e2f44;
+            color: #b9c9e0;
+            align-self: flex-start;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .status.loading {
+            background: #2d3b4f;
+            color: #d1dff0;
+            animation: pulse 1.4s infinite;
+        }
+
+        .status.success {
+            background: #065f46;
+            color: #a7f3d0;
+            border-color: #34d399;
+        }
+
+        .status.error {
+            background: #7f1d1d;
+            color: #fca5a5;
+            border-color: #ef4444;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .preview-box {
+            background: #0a121e;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #253343;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-box img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .preview-box video {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .preview-box .placeholder-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 300px;
+            background: #0b1422;
+            color: #4b617e;
+            font-size: 0.9rem;
+            font-weight: 400;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .preview-box .placeholder-text i {
+            font-size: 3rem;
+            opacity: 0.5;
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #2d405a;
+            border-top: 4px solid #e1306c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .download-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+        }
+
+        .btn-download {
+            background: linear-gradient(145deg, #059669, #047857);
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-download:hover {
+            transform: scale(1.02);
+            background: linear-gradient(145deg, #10b981, #059669);
+        }
+
+        .btn-download:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-download i {
+            font-size: 1rem;
+        }
+
+        .btn-copy {
+            background: rgba(45, 59, 79, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #d1dff0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-copy:hover {
+            background: rgba(45, 59, 79, 0.8);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .footer-note {
+            margin-top: 1.8rem;
+            font-size: 0.7rem;
+            color: #4a617c;
+            text-align: center;
+            border-top: 1px solid #1d2b3b;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-note span i {
+            margin-right: 0.2rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 1.5rem; }
+            .header h1 { font-size: 1.6rem; }
+            .content-type-grid { grid-template-columns: 1fr 1fr; }
+            .quick-link { font-size: 0.65rem; padding: 0.25rem 0.7rem; }
+            .preview-box { min-height: 200px; }
+        }
+
+        @media (max-width: 430px) {
+            .content-type-grid { grid-template-columns: 1fr; }
+            .btn-primary { width: 100%; justify-content: center; }
+            .download-actions { flex-direction: column; }
+            .btn-download, .btn-copy { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fab fa-instagram"></i>
+                <h1>Instagram Downloader</h1>
+            </div>
+            <p>Download videos, photos, reels & stories without watermark</p>
+            <div class="feature-badge">
+                <i class="fas fa-check-circle"></i> No Watermark &bull; Free &bull; HD Quality
+            </div>
+        </header>
+
+        <!-- Main Card -->
+        <div class="main-card">
+
+            <h2><i class="fas fa-download"></i> Paste Instagram URL</h2>
+
+            <!-- URL Input -->
+            <div class="url-input-group">
+                <input type="text" id="urlInput" placeholder="https://www.instagram.com/p/..." value="https://www.instagram.com/p/C7YxTkOKl1s/">
+                <button class="btn-primary" id="fetchBtn"><i class="fas fa-search"></i> Fetch & Download</button>
+            </div>
+
+            <!-- Quick Links -->
+            <div style="margin-bottom:0.3rem;font-size:0.8rem;color:#6f87a5;">
+                <i class="fas fa-bolt"></i> Try examples:
+            </div>
+            <div class="quick-links">
+                <button class="quick-link" data-url="https://www.instagram.com/p/C7YxTkOKl1s/">Photo Post</button>
+                <button class="quick-link" data-url="https://www.instagram.com/reel/C8XpLpNIVwV/">Reel Video</button>
+                <button class="quick-link" data-url="https://www.instagram.com/p/C8XqLpNIVwV/">Carousel Post</button>
+                <button class="quick-link" data-url="https://www.instagram.com/stories/instagram/123456789/">Story</button>
+            </div>
+
+            <!-- Content Type Selection -->
+            <div style="margin-bottom:0.5rem;font-size:0.8rem;color:#6f87a5;">
+                <i class="fas fa-tag"></i> Content type:
+            </div>
+            <div class="content-type-grid">
+                <div class="type-card active" data-type="all">
+                    <i class="fas fa-photo-video"></i>
+                    <h4>All</h4>
+                    <p>Auto-detect</p>
+                </div>
+                <div class="type-card" data-type="photo">
+                    <i class="fas fa-image"></i>
+                    <h4>Photo</h4>
+                    <p>High resolution</p>
+                </div>
+                <div class="type-card" data-type="video">
+                    <i class="fas fa-video"></i>
+                    <h4>Video</h4>
+                    <p>HD quality</p>
+                </div>
+                <div class="type-card" data-type="carousel">
+                    <i class="fas fa-images"></i>
+                    <h4>Carousel</h4>
+                    <p>Multiple items</p>
+                </div>
+                <div class="type-card" data-type="story">
+                    <i class="fas fa-clock"></i>
+                    <h4>Story</h4>
+                    <p>24h content</p>
+                </div>
+            </div>
+
+            <!-- Result Area -->
+            <div id="resultArea">
+                <div id="statusBadge" class="status">⏳ Processing...</div>
+                <div class="preview-box" id="previewBox">
+                    <div class="placeholder-text">
+                        <i class="fab fa-instagram" style="font-size:4rem;opacity:0.2;"></i>
+                        <span>Content preview will appear here</span>
+                    </div>
+                </div>
+                <div class="download-actions" id="downloadActions">
+                    <button class="btn-download" id="downloadBtn" disabled>
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button class="btn-copy" id="copyBtn">
+                        <i class="fas fa-copy"></i> Copy URL
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer Notes -->
+            <div class="footer-note">
+                <span><i class="fas fa-shield-alt"></i> No data stored</span>
+                <span><i class="fas fa-check-circle"></i> No watermark</span>
+                <span><i class="fas fa-lock"></i> Privacy first</span>
+                <span><i class="fas fa-mobile-alt"></i> Mobile friendly</span>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // DOM references
+            const urlInput = document.getElementById('urlInput');
+            const fetchBtn = document.getElementById('fetchBtn');
+            const resultArea = document.getElementById('resultArea');
+            const statusBadge = document.getElementById('statusBadge');
+            const previewBox = document.getElementById('previewBox');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const copyBtn = document.getElementById('copyBtn');
+
+            let selectedType = 'all';
+            let currentData = null;
+
+            // Content type selection
+            document.querySelectorAll('.type-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedType = this.dataset.type;
+                });
+            });
+
+            // Quick link clicks
+            document.querySelectorAll('.quick-link').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const url = this.dataset.url;
+                    if (url) {
+                        urlInput.value = url;
+                        // Auto-fetch
+                        setTimeout(() => fetchContent(), 300);
+                    }
+                });
+            });
+
+            // Copy URL
+            copyBtn.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                if (url) {
+                    navigator.clipboard.writeText(url).then(() => {
+                        const originalText = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                        }, 2000);
+                    }).catch(() => {
+                        // Fallback
+                        const textArea = document.createElement('textarea');
+                        textArea.value = url;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        alert('URL copied to clipboard!');
+                    });
+                }
+            });
+
+            // Main fetch function
+            async function fetchContent() {
+                const url = urlInput.value.trim();
+                if (!url) {
+                    alert('Please enter an Instagram URL.');
+                    return;
+                }
+
+                // Validate Instagram URL
+                if (!url.includes('instagram.com')) {
+                    alert('Please enter a valid Instagram URL.');
+                    return;
+                }
+
+                // Show result area with loading state
+                resultArea.classList.add('show');
+                statusBadge.className = 'status loading';
+                statusBadge.textContent = '⏳ Fetching content...';
+                previewBox.innerHTML = `
+                    <div class="placeholder-text">
+                        <div class="loader"></div>
+                        <span>Fetching Instagram content...</span>
+                    </div>
+                `;
+                downloadBtn.disabled = true;
+
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Generate mock data based on URL
+                const mockData = generateMockData(url);
+                currentData = mockData;
+
+                if (mockData.success) {
+                    statusBadge.className = 'status success';
+                    statusBadge.textContent = '✅ Content ready!';
+
+                    // Display preview
+                    displayPreview(mockData);
+                    downloadBtn.disabled = false;
+
+                } else {
+                    statusBadge.className = 'status error';
+                    statusBadge.textContent = '❌ Failed to fetch';
+                    previewBox.innerHTML = `
+                        <div class="placeholder-text" style="color:#f87171;">
+                            <i class="fas fa-exclamation-triangle" style="font-size:3rem;"></i>
+                            <span>Could not fetch content. Please check the URL and try again.</span>
+                            <span style="font-size:0.7rem;color:#6b7280;">Note: This is a demo. API integration required for real downloads.</span>
+                        </div>
+                    `;
+                    downloadBtn.disabled = true;
+                    currentData = null;
+                }
+            }
+
+            // Generate mock data for demo
+            function generateMockData(url) {
+                const isReel = url.includes('/reel/');
+                const isStory = url.includes('/stories/');
+                const isCarousel = url.includes('/p/') && !isReel;
+
+                let type = 'photo';
+                let mediaUrl = 'https://picsum.photos/seed/instagram/800/600';
+                let downloadUrl = 'https://picsum.photos/seed/instagram/1200/900';
+                let caption = 'Check out this amazing Instagram content! #instagram #download';
+
+                if (isReel) {
+                    type = 'video';
+                    mediaUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
+                    downloadUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
+                    caption = 'Awesome reel video! 🎬 #reels #instagram';
+                } else if (isStory) {
+                    type = 'story';
+                    mediaUrl = 'https://picsum.photos/seed/story/800/1200';
+                    downloadUrl = 'https://picsum.photos/seed/story/1200/1800';
+                    caption = 'Instagram Story - 24h content';
+                } else if (isCarousel) {
+                    type = 'carousel';
+                    mediaUrl = 'https://picsum.photos/seed/carousel/800/600';
+                    downloadUrl = 'https://picsum.photos/seed/carousel/1200/900';
+                    caption = 'Check out this carousel post! 📸';
+                } else {
+                    // Photo post
+                    type = 'photo';
+                    mediaUrl = 'https://picsum.photos/seed/photo/800/600';
+                    downloadUrl = 'https://picsum.photos/seed/photo/1200/900';
+                    caption = 'Beautiful photo post! 📷 #photography';
+                }
+
+                return {
+                    success: true,
+                    type: type,
+                    mediaUrl: mediaUrl,
+                    downloadUrl: downloadUrl,
+                    caption: caption,
+                    username: 'instagram_user',
+                    fullUrl: url
+                };
+            }
+
+            // Display preview
+            function displayPreview(data) {
+                let html = '';
+                const isVideo = data.type === 'video' || data.type === 'reel';
+
+                if (isVideo) {
+                    html = `
+                        <video controls autoplay muted loop>
+                            <source src="${data.mediaUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    `;
+                } else {
+                    html = `
+                        <img src="${data.mediaUrl}" alt="Instagram content" loading="lazy">
+                    `;
+                }
+
+                // Add caption overlay
+                html += `
+                    <div style="position:absolute;bottom:0;left:0;right:0;padding:1rem;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:white;font-size:0.8rem;pointer-events:none;">
+                        <i class="fab fa-instagram" style="margin-right:0.5rem;color:#e1306c;"></i>
+                        ${data.username} • ${data.caption.substring(0, 60)}${data.caption.length > 60 ? '...' : ''}
+                    </div>
+                `;
+
+                previewBox.innerHTML = html;
+            }
+
+            // Download function
+            function downloadContent() {
+                if (!currentData) return;
+
+                const url = currentData.downloadUrl;
+                const filename = `instagram_${currentData.type}_${Date.now()}.${currentData.type === 'video' ? 'mp4' : 'jpg'}`;
+
+                // For demo, open in new tab
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Show notification
+                statusBadge.className = 'status success';
+                statusBadge.textContent = '✅ Download started!';
+                setTimeout(() => {
+                    statusBadge.className = 'status success';
+                    statusBadge.textContent = '✅ Content ready!';
+                }, 2000);
+            }
+
+            // Event listeners
+            fetchBtn.addEventListener('click', fetchContent);
+
+            downloadBtn.addEventListener('click', downloadContent);
+
+            urlInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    fetchContent();
+                }
+            });
+
+            // Hide result initially
+            resultArea.classList.remove('show');
+
+            // Add download via right-click context
+            document.addEventListener('contextmenu', function(e) {
+                const target = e.target;
+                if (target.closest('.preview-box') && currentData) {
+                    e.preventDefault();
+                    downloadContent();
+                }
+            });
+
+            console.log('Instagram Downloader loaded successfully!');
+            console.log('Note: This is a demo version. For real downloads, you need to integrate with Instagram API or a third-party service.');
+        })();
+    </script>
+
+</body>
+</html>
