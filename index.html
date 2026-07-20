@@ -1,1071 +1,1452 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Instagram Downloader - No Watermark | Free Tool</title>
-    <meta name="description" content="Download Instagram videos, photos, reels, and stories without watermark for free. High quality, no login required.">
-    <meta name="keywords" content="instagram downloader, video downloader, photo downloader, no watermark, instagram saver, reel downloader">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(145deg, #0b1120 0%, #1a2332 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            color: #e2e8f0;
-        }
-
-        .container {
-            max-width: 960px;
-            width: 100%;
-            background: rgba(22, 34, 50, 0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 2.5rem;
-            padding: 2.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -30%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(225, 48, 108, 0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .container::after {
-            content: '';
-            position: absolute;
-            bottom: -40%;
-            left: -20%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(193, 53, 132, 0.06) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        /* Header Section */
-        .header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header .logo-wrapper {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .header .logo-wrapper .icon-box {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-            box-shadow: 0 12px 30px -8px rgba(225, 48, 108, 0.4);
-        }
-
-        .header h1 {
-            font-size: 2.6rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #f0f9ff 0%, #b6d4fe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header .subtitle {
-            color: #94a3b8;
-            margin-top: 0.5rem;
-            font-size: 1.05rem;
-        }
-
-        .header .subtitle strong {
-            color: #f472b6;
-        }
-
-        .badges {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.6rem;
-            margin-top: 1rem;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 0.3rem 1rem;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: #b9c9e0;
-        }
-
-        .badge i {
-            color: #f472b6;
-        }
-
-        .badge.highlight {
-            background: rgba(225, 48, 108, 0.12);
-            border-color: rgba(225, 48, 108, 0.2);
-            color: #f472b6;
-        }
-
-        .badge.highlight i {
-            color: #e1306c;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 1rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 1.5rem;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            position: relative;
-            z-index: 1;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-item .number {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #f0f9ff, #b6d4fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-item .label {
-            font-size: 0.65rem;
-            color: #6f87a5;
-            margin-top: 0.1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        /* Main Card */
-        .main-card {
-            position: relative;
-            z-index: 1;
-        }
-
-        .main-card .section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            color: #eef2f6;
-            margin-bottom: 1rem;
-        }
-
-        .main-card .section-title i {
-            color: #e1306c;
-        }
-
-        /* API Status Bar */
-        .api-status-bar {
-            background: rgba(52, 211, 153, 0.08);
-            border: 1px solid rgba(52, 211, 153, 0.15);
-            border-radius: 1rem;
-            padding: 0.8rem 1.2rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-
-        .api-status-bar .status-icon {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #34d399;
-            animation: pulse-dot 2s infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .api-status-bar .status-text {
-            color: #a7f3d0;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .api-status-bar .status-detail {
-            color: #6f87a5;
-            font-size: 0.7rem;
-            margin-left: auto;
-        }
-
-        .api-status-bar .status-detail i {
-            color: #fbbf24;
-        }
-
-        /* URL Input */
-        .url-input-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            background: rgba(17, 28, 43, 0.6);
-            border-radius: 80px;
-            padding: 0.3rem;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .url-input-group input {
-            flex: 1 1 200px;
-            padding: 0.8rem 1.5rem;
-            border-radius: 60px;
-            border: none;
-            background: transparent;
-            color: #f1f5f9;
-            font-size: 0.95rem;
-            outline: none;
-            font-family: inherit;
-            min-width: 150px;
-        }
-
-        .url-input-group input::placeholder {
-            color: #5f7390;
-        }
-
-        .url-input-group .btn-primary {
-            background: linear-gradient(145deg, #e1306c, #c13584);
-            border: none;
-            padding: 0.8rem 2.2rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: white;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 8px 20px -8px rgba(225, 48, 108, 0.4);
-            font-family: inherit;
-            white-space: nowrap;
-        }
-
-        .url-input-group .btn-primary:hover {
-            transform: scale(1.02);
-            background: linear-gradient(145deg, #f13a76, #d13a8f);
-            box-shadow: 0 12px 28px -8px rgba(225, 48, 108, 0.6);
-        }
-
-        /* Quick Examples */
-        .quick-section {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.6rem;
-            margin: 1rem 0 1.5rem 0;
-        }
-
-        .quick-section .label {
-            font-size: 0.75rem;
-            color: #6f87a5;
-            font-weight: 500;
-        }
-
-        .quick-link {
-            background: rgba(45, 59, 79, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 0.35rem 1rem;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: #b9c9e0;
-            cursor: pointer;
-            transition: 0.15s;
-            font-family: inherit;
-            white-space: nowrap;
-        }
-
-        .quick-link:hover {
-            background: #2c3f58;
-            color: #f0f6ff;
-            border-color: #4b6a8b;
-            transform: translateY(-1px);
-        }
-
-        .quick-link i {
-            margin-right: 0.3rem;
-            font-size: 0.6rem;
-            color: #f472b6;
-        }
-
-        /* Result Area */
-        #resultArea {
-            margin-top: 1.5rem;
-            display: none;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        #resultArea.show {
-            display: flex;
-        }
-
-        .status-bar {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-
-        .status {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.3rem 1.1rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: #1e2f44;
-            color: #b9c9e0;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .status.loading {
-            background: #2d3b4f;
-            color: #d1dff0;
-            animation: pulse 1.4s infinite;
-        }
-
-        .status.success {
-            background: #065f46;
-            color: #a7f3d0;
-            border-color: #34d399;
-        }
-
-        .status.error {
-            background: #7f1d1d;
-            color: #fca5a5;
-            border-color: #ef4444;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-
-        .preview-box {
-            background: #0a121e;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid #253343;
-            min-height: 320px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .preview-box img {
-            width: 100%;
-            height: auto;
-            max-height: 500px;
-            object-fit: contain;
-            display: block;
-        }
-
-        .preview-box video {
-            width: 100%;
-            max-height: 500px;
-            object-fit: contain;
-            display: block;
-            background: #000;
-        }
-
-        .preview-box .placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            padding: 2rem;
-            color: #4b617e;
-            text-align: center;
-        }
-
-        .preview-box .placeholder i {
-            font-size: 3.5rem;
-            opacity: 0.3;
-            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .preview-box .placeholder span {
-            font-size: 0.9rem;
-            max-width: 300px;
-        }
-
-        .loader-spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid #2d405a;
-            border-top: 4px solid #e1306c;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .preview-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1rem;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
-            color: white;
-            font-size: 0.8rem;
-            pointer-events: none;
-        }
-
-        .preview-caption .user {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .preview-caption .user i {
-            color: #e1306c;
-            font-size: 0.9rem;
-        }
-
-        /* Download Actions */
-        .download-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-top: 0.5rem;
-        }
-
-        .btn-download {
-            background: linear-gradient(145deg, #059669, #047857);
-            border: none;
-            padding: 0.7rem 2rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: white;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: inherit;
-        }
-
-        .btn-download:hover:not(:disabled) {
-            transform: scale(1.02);
-            background: linear-gradient(145deg, #10b981, #059669);
-        }
-
-        .btn-download:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-download i {
-            font-size: 1rem;
-        }
-
-        .btn-secondary {
-            background: rgba(45, 59, 79, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 0.7rem 1.5rem;
-            border-radius: 60px;
-            font-weight: 500;
-            font-size: 0.85rem;
-            color: #d1dff0;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: inherit;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(45, 59, 79, 0.8);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        /* Features Section */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 1.8rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .feature-item {
-            text-align: center;
-            padding: 0.5rem;
-        }
-
-        .feature-item i {
-            font-size: 1.3rem;
-            color: #f472b6;
-            margin-bottom: 0.3rem;
-        }
-
-        .feature-item h5 {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #e8edf5;
-        }
-
-        .feature-item p {
-            font-size: 0.6rem;
-            color: #6f87a5;
-            margin-top: 0.1rem;
-        }
-
-        /* Hyperlink Section */
-        .hyperlink-section {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.2rem 2rem;
-        }
-
-        .hyperlink-section a {
-            color: #93b4e6;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: 0.2s;
-            padding: 0.3rem 0.8rem;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid transparent;
-        }
-
-        .hyperlink-section a:hover {
-            color: #c7d9f5;
-            background: rgba(96, 165, 250, 0.08);
-            border-color: rgba(96, 165, 250, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .hyperlink-section a i {
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        .hyperlink-section a .ig-icon {
-            color: #e1306c;
-        }
-
-        /* Footer */
-        .footer {
-            margin-top: 2rem;
-            font-size: 0.7rem;
-            color: #4a617c;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer span i {
-            margin-right: 0.2rem;
-            opacity: 0.6;
-        }
-
-        .footer a {
-            color: #6f87a5;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-
-        .footer a:hover {
-            color: #b9c9e0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1.8rem 1.5rem 2rem;
-                border-radius: 1.8rem;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .header .logo-wrapper .icon-box {
-                width: 48px;
-                height: 48px;
-                font-size: 1.5rem;
-            }
-
-            .stats-bar {
-                grid-template-columns: repeat(2, 1fr);
-                padding: 1rem;
-            }
-
-            .url-input-group {
-                border-radius: 60px;
-                padding: 0.2rem;
-            }
-
-            .url-input-group input {
-                padding: 0.7rem 1.2rem;
-                font-size: 0.85rem;
-            }
-
-            .url-input-group .btn-primary {
-                padding: 0.7rem 1.5rem;
-                font-size: 0.85rem;
-            }
-
-            .features {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.8rem;
-            }
-
-            .preview-box {
-                min-height: 220px;
-            }
-
-            .quick-link {
-                font-size: 0.6rem;
-                padding: 0.25rem 0.7rem;
-            }
-
-            .hyperlink-section {
-                gap: 0.8rem 1.2rem;
-            }
-
-            .hyperlink-section a {
-                font-size: 0.7rem;
-                padding: 0.2rem 0.6rem;
-            }
-
-            .api-status-bar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .api-status-bar .status-detail {
-                margin-left: 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 1.2rem 1rem 1.5rem;
-                border-radius: 1.5rem;
-            }
-
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .header .subtitle {
-                font-size: 0.85rem;
-            }
-
-            .stats-bar {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.5rem;
-                padding: 0.8rem;
-            }
-
-            .stat-item .number {
-                font-size: 1.2rem;
-            }
-
-            .url-input-group {
-                flex-direction: column;
-                border-radius: 30px;
-                background: transparent;
-                padding: 0;
-                border: none;
-                gap: 0.5rem;
-            }
-
-            .url-input-group input {
-                background: rgba(17, 28, 43, 0.8);
-                border: 1px solid rgba(255, 255, 255, 0.06);
-                border-radius: 30px;
-                padding: 0.8rem 1.2rem;
-                width: 100%;
-            }
-
-            .url-input-group .btn-primary {
-                width: 100%;
-                justify-content: center;
-                padding: 0.8rem;
-                border-radius: 30px;
-            }
-
-            .features {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .download-actions {
-                flex-direction: column;
-            }
-
-            .btn-download,
-            .btn-secondary {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .footer {
-                flex-direction: column;
-                gap: 0.4rem;
-            }
-
-            .hyperlink-section {
-                flex-direction: column;
-                align-items: center;
-                gap: 0.6rem;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-
-        <!-- Header -->
-        <header class="header">
-            <div class="logo-wrapper">
-                <div class="icon-box">
-                    <i class="fab fa-instagram"></i>
-                </div>
-                <h1>Instagram Downloader</h1>
+import React, { useState, useRef, useEffect } from 'react';
+import { 
+  Settings, Undo2, Redo2, Calculator, Code, Cpu, Copy, Check, 
+  FileCode, Terminal, Variable, Share2, Moon, Sun, Play, Sparkles,
+  Info, ExternalLink, ChevronRight, FileText, CheckCircle2
+} from 'lucide-react';
+
+
+// --- CORE MATHEMATICAL ENGINE (Originally math.ts) ---
+
+const KNOWN_WORDS = [
+  'sin','cos','tan','asin','acos','atan',
+  'sinh','cosh','tanh','log_n','log','ln',
+  'root','floor','ceil','round','abs','sgn','mod','ans','pi'
+];
+
+export function tokenize(input) {
+  input = input.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+  const tokens = [];
+  let i = 0;
+  while (i < input.length) {
+    const char = input[i];
+    if (/\s/.test(char)) { i++; continue; }
+
+    if (/\d|\./.test(char)) {
+      let numStr = '';
+      while (i < input.length && /[\d\.]/.test(input[i])) { numStr += input[i]; i++; }
+      if (i < input.length && (input[i] === 'e' || input[i] === 'E')) {
+        numStr += input[i]; i++;
+        if (i < input.length && (input[i] === '+' || input[i] === '-')) { numStr += input[i]; i++; }
+        while (i < input.length && /\d/.test(input[i])) { numStr += input[i]; i++; }
+      }
+      tokens.push({ type: 'NUMBER', value: parseFloat(numStr) });
+      continue;
+    }
+
+    if (/[a-zA-Z_π]/.test(char)) {
+      let matched = false;
+      for (const word of KNOWN_WORDS) {
+        if (input.startsWith(word, i)) {
+          tokens.push({ type: 'IDENTIFIER', value: word });
+          i += word.length;
+          matched = true;
+          break;
+        }
+      }
+      if (matched) continue;
+      tokens.push({ type: 'IDENTIFIER', value: char });
+      i++;
+      continue;
+    }
+
+    if (/[+\-*\/^%!=\(\),|√]/.test(char)) {
+      tokens.push({ type: 'OPERATOR', value: char });
+      i++;
+      continue;
+    }
+
+    throw new Error(`Unexpected character: ${char}`);
+  }
+  return tokens;
+}
+
+export function insertImplicitMultiplication(tokens) {
+  const result = [];
+  const knownFunctions = new Set(KNOWN_WORDS);
+  for (let i = 0; i < tokens.length; i++) {
+    const prev = result[result.length - 1];
+    const curr = tokens[i];
+    if (prev) {
+      const isPrevImplicitLeft =
+        prev.type === 'NUMBER' ||
+        (prev.type === 'IDENTIFIER' && prev.value !== 'mod') ||
+        (prev.type === 'OPERATOR' && (prev.value === ')' || prev.value === '!' || prev.value === '%' || prev.value === '|'));
+
+      const isCurrImplicitRight =
+        curr.type === 'NUMBER' ||
+        (curr.type === 'IDENTIFIER' && curr.value !== 'mod') ||
+        (curr.type === 'OPERATOR' && (curr.value === '(' || curr.value === '√' || curr.value === '|'));
+
+      if (isPrevImplicitLeft && isCurrImplicitRight) {
+        const isFunctionCall =
+          prev.type === 'IDENTIFIER' &&
+          knownFunctions.has(prev.value) &&
+          curr.value === '(';
+        if (!isFunctionCall) {
+          result.push({ type: 'OPERATOR', value: '*' });
+        }
+      }
+    }
+    result.push(curr);
+  }
+  return result;
+}
+
+class Parser {
+  constructor(tokens, vars, radMode) {
+    this.tokens = tokens;
+    this.pos = 0;
+    this.vars = { ...vars };
+    this.updatedVars = {};
+    this.radMode = radMode;
+  }
+
+  peek() { return this.tokens[this.pos]; }
+  next() { return this.tokens[this.pos++]; }
+  match(val) {
+    if (this.peek()?.value === val) { this.pos++; return true; }
+    return false;
+  }
+  consume(val) {
+    if (!this.match(val)) throw new Error(`Expected ${val}`);
+  }
+
+  parse() {
+    if (this.pos >= this.tokens.length) return NaN;
+    const res = this.parseAssignment();
+    if (this.pos < this.tokens.length) throw new Error("Unexpected trailing characters");
+    return res;
+  }
+
+  parseAssignment() {
+    if (
+      this.pos + 1 < this.tokens.length &&
+      this.tokens[this.pos].type === 'IDENTIFIER' &&
+      this.tokens[this.pos + 1].value === '='
+    ) {
+      const varName = this.tokens[this.pos].value;
+      this.pos += 2;
+      const val = this.parseAddition();
+      this.vars[varName] = val;
+      this.updatedVars[varName] = val;
+      return val;
+    }
+    return this.parseAddition();
+  }
+
+  parseAddition() {
+    let left = this.parseMultiplication();
+    while (this.peek()?.value === '+' || this.peek()?.value === '-') {
+      const op = this.next().value;
+      const right = this.parseMultiplication();
+      left = op === '+' ? left + right : left - right;
+    }
+    return left;
+  }
+
+  parseMultiplication() {
+    let left = this.parsePower();
+    while (
+      this.peek()?.value === '*' ||
+      this.peek()?.value === '/' ||
+      this.peek()?.value === 'mod'
+    ) {
+      const op = this.next().value;
+      const right = this.parsePower();
+      if (op === '*') left *= right;
+      else if (op === '/') left /= right;
+      else if (op === 'mod') left = left % right;
+    }
+    return left;
+  }
+
+  parsePower() {
+    const left = this.parseUnary();
+    if (this.peek()?.value === '^') {
+      this.next();
+      const right = this.parsePower(); // right-associative
+      return Math.pow(left, right);
+    }
+    return left;
+  }
+
+  parseUnary() {
+    if (this.peek()?.value === '+') { this.next(); return this.parseUnary(); }
+    if (this.peek()?.value === '-') { this.next(); return -this.parseUnary(); }
+    return this.parsePostfix();
+  }
+
+  parsePostfix() {
+    let left = this.parsePrimary();
+    while (this.peek()?.value === '!' || this.peek()?.value === '%') {
+      const op = this.next().value;
+      if (op === '!') left = this.factorial(left);
+      if (op === '%') left = left / 100;
+    }
+    return left;
+  }
+
+  parsePrimary() {
+    const t = this.peek();
+    if (!t) throw new Error("Unexpected end");
+
+    if (t.type === 'NUMBER') { this.next(); return t.value; }
+
+    if (t.value === '(') {
+      this.next();
+      const expr = this.parseAddition();
+      this.consume(')');
+      return expr;
+    }
+
+    if (t.value === '|') {
+      this.next();
+      const expr = this.parseAddition();
+      this.consume('|');
+      return Math.abs(expr);
+    }
+
+    if (t.value === '√') {
+      this.next();
+      return Math.sqrt(this.parsePrimary());
+    }
+
+    if (t.type === 'IDENTIFIER') {
+      this.next();
+      const name = t.value;
+      if (name === 'pi' || name === 'π') return Math.PI;
+      if (name === 'e') return Math.E;
+
+      if (this.peek()?.value === '(') {
+        this.next();
+        const args = [];
+        if (this.peek()?.value !== ')') {
+          args.push(this.parseAddition());
+          while (this.peek()?.value === ',') {
+            this.next();
+            args.push(this.parseAddition());
+          }
+        }
+        this.consume(')');
+        return this.callFunction(name, args);
+      }
+
+      if (name in this.vars) return this.vars[name];
+      throw new Error(`Unknown variable: ${name}`);
+    }
+
+    throw new Error(`Unexpected token: ${t.value}`);
+  }
+
+  factorial(n) {
+    if (n < 0 || !Number.isInteger(n)) throw new Error("Factorial of non-integer");
+    if (n > 170) return Infinity;
+    let res = 1;
+    for (let i = 2; i <= n; i++) res *= i;
+    return res;
+  }
+
+  callFunction(name, args) {
+    const rad = this.radMode ? 1 : Math.PI / 180;
+    switch (name) {
+      case 'sin':   return Math.sin(args[0] * rad);
+      case 'cos':   return Math.cos(args[0] * rad);
+      case 'tan':   return Math.tan(args[0] * rad);
+      case 'asin':  return Math.asin(args[0]) / rad;
+      case 'acos':  return Math.acos(args[0]) / rad;
+      case 'atan':  return Math.atan(args[0]) / rad;
+      case 'sinh':  return Math.sinh(args[0]);
+      case 'cosh':  return Math.cosh(args[0]);
+      case 'tanh':  return Math.tanh(args[0]);
+      case 'log':   return Math.log10(args[0]);
+      case 'ln':    return Math.log(args[0]);
+      case 'log_n': return Math.log(args[1]) / Math.log(args[0]);
+      case 'root':  return Math.pow(args[1], 1 / args[0]);
+      case 'floor': return Math.floor(args[0]);
+      case 'ceil':  return Math.ceil(args[0]);
+      case 'round': return Math.round(args[0]);
+      case 'abs':   return Math.abs(args[0]);
+      case 'sgn':   return Math.sign(args[0]);
+      case 'mod':   return args[0] % args[1];
+      default: throw new Error(`Unknown function: ${name}`);
+    }
+  }
+}
+
+export function evaluateExpression(input, vars, radMode) {
+  try {
+    if (!input.trim()) return { result: undefined, updatedVars: {} };
+    const tokens = tokenize(input);
+    const withImplicit = insertImplicitMultiplication(tokens);
+    const parser = new Parser(withImplicit, vars, radMode);
+    const result = parser.parse();
+    return { result, updatedVars: parser.updatedVars };
+  } catch (e) {
+    return { error: e.message || 'Error' };
+  }
+}
+
+export function formatResult(num, precision, thousandsSeparator) {
+  if (isNaN(num)) return 'Undefined';
+  if (!isFinite(num)) return 'Overflow';
+
+  const numToFormat = parseFloat(num.toPrecision(15));
+  let str = '';
+
+  if (precision === 'full') {
+    str = numToFormat.toString();
+  } else {
+    str = parseFloat(numToFormat.toFixed(precision)).toString();
+  }
+
+  if (Math.abs(numToFormat) >= 1e12 || (Math.abs(numToFormat) > 0 && Math.abs(numToFormat) < 1e-7)) {
+    str = precision === 'full'
+      ? numToFormat.toExponential()
+      : numToFormat.toExponential(precision);
+  }
+
+  if (thousandsSeparator && !str.includes('e')) {
+    const parts = str.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    str = parts.join('.');
+  }
+
+  return str;
+}
+
+
+
+// --- FILE DATABASE (FOR SOURCE EXPLORER) ---
+
+const FILES_DATABASE = {
+  'App.tsx': {
+    language: 'tsx',
+    description: 'Main Scientific Calculator graphical interface, containing reactive layout controls, keypad mappings, event handling, and custom view panels.',
+    dependencies: ['react', 'lucide-react', 'math.ts', 'index.css'],
+    code: `import { useState, useRef, useEffect } from 'react';
+import { Route, Switch, Router as WouterRouter } from 'wouter';
+import { evaluateExpression, formatResult } from './lib/math';
+import { Settings, Undo2, Redo2 } from 'lucide-react';
+
+const cn = (...classes: (string | undefined | null | false)[]) =>
+  classes.filter(Boolean).join(' ');
+
+const Button = ({ className, variant = 'default', colSpan, ...props }: any) => {
+  const variants = {
+    default:   'bg-card text-foreground border shadow-sm hover:bg-muted',
+    secondary: 'bg-secondary text-secondary-foreground border shadow-sm hover:bg-secondary/80',
+    outline:   'border border-border bg-transparent hover:bg-muted text-foreground',
+    ghost:     'hover:bg-muted text-foreground',
+    primary:   'bg-primary text-primary-foreground shadow hover:bg-primary/90',
+  };
+  return (
+    <button
+      className={cn(
+        "flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 select-none",
+        variants[variant as keyof typeof variants],
+        colSpan === 2 && 'col-span-2',
+        className
+      )}
+      {...props}
+    />
+  );
+};
+
+// ... Keypad configurations & views mapping ...
+const mainGrid = [
+  { label: 'a²',  insert: '^2' },     { label: 'aᵇ',  insert: '^' },  { label: '|a|', insert: 'abs(' }, { blank: true },
+  { label: '7',   insert: '7',  var: 'secondary' }, { label: '8', insert: '8', var: 'secondary' }, { label: '9', insert: '9', var: 'secondary' },
+  { label: '÷',   insert: '/' }, { label: '%', insert: '%' }, { label: 'a/b', insert: '/' },
+  // ... extra grid items configured ...
+];`
+  },
+  'math.ts': {
+    language: 'typescript',
+    description: 'A sophisticated Math Parser Engine that uses Custom Lexical Tokenization, Implicit Multipliers insertion, and recursive mathematical parsing supporting priority expressions.',
+    dependencies: [],
+    code: `export type Token = { type: 'NUMBER'; value: number }
+                  | { type: 'IDENTIFIER'; value: string }
+                  | { type: 'OPERATOR'; value: string };
+
+const KNOWN_WORDS = [
+  'sin','cos','tan','asin','acos','atan',
+  'sinh','cosh','tanh','log_n','log','ln',
+  'root','floor','ceil','round','abs','sgn','mod','ans','pi'
+];
+
+export function tokenize(input: string): Token[] {
+  input = input.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+  const tokens: Token[] = [];
+  let i = 0;
+  while (i < input.length) {
+    const char = input[i];
+    if (/\\s/.test(char)) { i++; continue; }
+    // Tokenization of numbers & variables ...
+  }
+  return tokens;
+}
+
+export function insertImplicitMultiplication(tokens: Token[]): Token[] {
+  // Checks token pairs to automatically insert multipliers where syntax simplifies
+  // e.g., converts '3pi' into '3 * pi' and '2(3+1)' into '2 * (3+1)'
+}
+
+class Parser {
+  // LL(1) inspired Parser that parses terms, factors, powers, unary & expressions
+}`
+  },
+  'index.css': {
+    language: 'css',
+    description: 'Dynamic Tailwind v4 styling theme tokens, responsive layout definitions, and seamless dark and light theme palettes built with customizable HSL color mappings.',
+    dependencies: [],
+    code: `@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --font-sans: "Inter", system-ui, sans-serif;
+  --radius-lg: var(--radius);
+}
+
+:root {
+  --background: 210 20% 98%;
+  --foreground: 220 30% 15%;
+  --primary: 190 90% 40%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 222 25% 10%;
+  --foreground: 210 20% 90%;
+  --primary: 190 90% 45%;
+}`
+  },
+  'main.tsx': {
+    language: 'tsx',
+    description: 'Application entrypoint compiling React DOM, mounting CSS stylesheets, and rendering the default root viewport controller.',
+    dependencies: ['react', 'react-dom', 'App.tsx', 'index.css'],
+    code: `import { createRoot } from 'react-dom/client';
+import App from './App';
+import './index.css';
+
+createRoot(document.getElementById('root')!).render(<App />);`
+  }
+};
+
+
+
+// --- HELPER COMPONENT: CN ---
+const cn = (...classes) => classes.filter(Boolean).join(' ');
+
+// --- HELPER COMPONENT: BUTTON ---
+const Button = ({ className, variant = 'default', colSpan, ...props }) => {
+  const variants = {
+    default:   'bg-card text-foreground border border-border/60 shadow-sm hover:bg-muted/80',
+    secondary: 'bg-secondary text-secondary-foreground border border-border/40 shadow-sm hover:bg-secondary/80',
+    outline:   'border border-border/80 bg-transparent hover:bg-muted text-foreground',
+    ghost:     'hover:bg-muted text-foreground',
+    primary:   'bg-primary text-primary-foreground shadow-md hover:bg-primary/95 active:scale-98',
+    action:    'bg-muted/40 hover:bg-muted/80 border border-border text-foreground hover:text-primary transition-all duration-200'
+  };
+  return (
+    <button
+      className={cn(
+        "flex items-center justify-center rounded-lg font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 select-none",
+        variants[variant],
+        colSpan === 2 && 'col-span-2',
+        className
+      )}
+      {...props}
+    />
+  );
+};
+
+// --- SETTINGS POPOVER ---
+const SettingsPopover = ({ precision, setPrecision, thousandsSep, setThousandsSep, dark, setDark }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative">
+      <Button variant="ghost" className="h-9 w-9 p-0 rounded-full" onClick={() => setOpen(!open)}>
+        <Settings className={cn("h-4.5 w-4.5 transition-transform duration-300", open && "rotate-90 text-primary")} />
+      </Button>
+      {open && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div className="absolute right-0 top-11 w-68 p-5 rounded-2xl border border-border/80 bg-card text-card-foreground shadow-xl z-50 flex flex-col gap-4 animate-in fade-in slide-in-from-top-2 duration-150">
+            <h4 className="font-semibold text-sm border-b pb-2 text-foreground/90 flex items-center gap-2">
+              <Settings className="w-4 h-4 text-primary" /> Configuration Settings
+            </h4>
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-muted-foreground">Output Precision</label>
+              <select
+                className="w-full p-2.5 rounded-lg border border-border bg-background text-xs text-foreground focus:ring-1 focus:ring-primary focus:outline-none"
+                value={precision}
+                onChange={e => setPrecision(e.target.value === 'full' ? 'full' : Number(e.target.value))}
+              >
+                <option value="full">Full Floating Precision</option>
+                <option value="2">2 Decimal Places</option>
+                <option value="4">4 Decimal Places</option>
+                <option value="6">6 Decimal Places</option>
+                <option value="8">8 Decimal Places</option>
+                <option value="10">10 Decimal Places</option>
+              </select>
             </div>
-            <p class="subtitle">Download videos, photos, reels & stories — <strong>no watermark</strong>, no login required</p>
-            <div class="badges">
-                <span class="badge highlight"><i class="fas fa-check-circle"></i> 100% Free</span>
-                <span class="badge"><i class="fas fa-image"></i> HD Quality</span>
-                <span class="badge"><i class="fas fa-bolt"></i> Fast Download</span>
-                <span class="badge"><i class="fas fa-shield-alt"></i> Privacy Safe</span>
+            <div className="flex items-center justify-between py-1">
+              <span className="text-xs font-medium text-muted-foreground">Thousands Separator</span>
+              <input 
+                type="checkbox" 
+                checked={thousandsSep} 
+                onChange={e => setThousandsSep(e.target.checked)} 
+                className="h-4 w-4 rounded border-border accent-primary cursor-pointer" 
+              />
             </div>
-        </header>
+            <div className="flex items-center justify-between py-1 border-t pt-3">
+              <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+                {dark ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />} Dark Color Palette
+              </span>
+              <input 
+                type="checkbox" 
+                checked={dark} 
+                onChange={e => setDark(e.target.checked)} 
+                className="h-4 w-4 rounded border-border accent-primary cursor-pointer" 
+              />
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-item">
-                <div class="number">2.4M+</div>
-                <div class="label">Downloads</div>
+
+
+// --- CALCULATOR COMPONENT ---
+
+const mainGrid = [
+  { label: 'a²',  insert: '^2' },     { label: 'aᵇ',  insert: '^' },  { label: '|a|', insert: 'abs(' }, { blank: true },
+  { label: '7',   insert: '7',  var: 'secondary' }, { label: '8', insert: '8', var: 'secondary' }, { label: '9', insert: '9', var: 'secondary' },
+  { label: '÷',   insert: '/' }, { label: '%', insert: '%' }, { label: 'a/b', insert: '/' },
+
+  { label: '√',   insert: '√(' }, { label: 'ⁿ√', insert: 'root(' }, { label: 'π', insert: 'π' }, { blank: true },
+  { label: '4',   insert: '4',  var: 'secondary' }, { label: '5', insert: '5', var: 'secondary' }, { label: '6', insert: '6', var: 'secondary' },
+  { label: '×',   insert: '*' }, { label: '←', action: 'left' }, { label: '→', action: 'right' },
+
+  { label: 'sin', insert: 'sin(' }, { label: 'cos', insert: 'cos(' }, { label: 'tan', insert: 'tan(' }, { blank: true },
+  { label: '1',   insert: '1',  var: 'secondary' }, { label: '2', insert: '2', var: 'secondary' }, { label: '3', insert: '3', var: 'secondary' },
+  { label: '−',   insert: '-' }, { label: '⌫', action: 'backspace', colSpan: 2 },
+
+  { label: '(',   insert: '(' }, { label: ')', insert: ')' }, { label: ',', insert: ',' }, { blank: true },
+  { label: '0',   insert: '0',  var: 'secondary' }, { label: '.', insert: '.', var: 'secondary' }, { label: 'ans', insert: 'ans', var: 'secondary' },
+  { label: '+',   insert: '+' }, { label: '=', action: 'eval', colSpan: 2, var: 'primary' },
+];
+
+const MainKeypad = ({ onInsert, onAction }) => (
+  <div className="grid grid-cols-10 gap-1.5 sm:gap-2 h-full auto-rows-[minmax(0,1fr)]">
+    {mainGrid.map((btn, i) => {
+      if (btn.blank) return <div key={i} className="hidden sm:block" />;
+      return (
+        <Button
+          key={i}
+          variant={btn.var || 'outline'}
+          colSpan={btn.colSpan}
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => btn.action ? onAction(btn.action) : onInsert(btn.insert)}
+          className="text-[11px] sm:text-sm font-mono rounded-lg active:scale-95 duration-75"
+        >
+          {btn.label}
+        </Button>
+      );
+    })}
+  </div>
+);
+
+const funcGrid = [
+  { label: 'asin',  insert: 'asin('  }, { label: 'acos',  insert: 'acos('  }, { label: 'atan',  insert: 'atan('  },
+  { label: 'sinh',  insert: 'sinh('  }, { label: 'cosh',  insert: 'cosh('  }, { label: 'tanh',  insert: 'tanh('  },
+  { label: 'log',   insert: 'log('   }, { label: 'log_n', insert: 'log_n(' }, { label: 'ln',    insert: 'ln('    },
+  { label: 'e^x',   insert: 'e^'     }, { label: '10^x',  insert: '10^'    }, { label: 'n!',    insert: '!'      },
+  { label: 'floor', insert: 'floor(' }, { label: 'ceil',  insert: 'ceil('  }, { label: 'round', insert: 'round(' },
+  { label: 'mod',   insert: 'mod('   }, { label: 'abs',   insert: 'abs('   }, { label: 'sgn',   insert: 'sgn('   },
+];
+
+const FuncKeypad = ({ onInsert }) => (
+  <div className="grid grid-cols-3 gap-2.5 max-w-[340px] mx-auto h-full auto-rows-[minmax(0,1fr)]">
+    {funcGrid.map((btn, i) => (
+      <Button
+        key={i}
+        variant="outline"
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => onInsert(btn.insert)}
+        className="text-xs sm:text-sm font-mono rounded-lg active:scale-95 duration-75"
+      >
+        {btn.label}
+      </Button>
+    ))}
+  </div>
+);
+
+const abcRows = [
+  ['q','w','e','r','t','y','u','i','o','p'],
+  ['a','s','d','f','g','h','j','k','l'],
+  ['z','x','c','v','b','n','m'],
+];
+
+const AbcKeypad = ({ onInsert, onClearVars }) => (
+  <div className="flex flex-col gap-2 items-center h-full justify-center">
+    <div className="flex gap-1 sm:gap-1.5">
+      {'1234567890'.split('').map(k => (
+        <Button key={k} variant="secondary" className="w-7 h-9.5 sm:w-10 sm:h-11 font-mono text-xs sm:text-sm"
+          onMouseDown={(e) => e.preventDefault()} onClick={() => onInsert(k)}>
+          {k}
+        </Button>
+      ))}
+    </div>
+    {abcRows.map((row, i) => (
+      <div key={i} className="flex gap-1 sm:gap-1.5">
+        {row.map(k => (
+          <Button key={k} variant="outline" className="w-7 h-9.5 sm:w-10 sm:h-11 uppercase font-mono text-xs sm:text-sm"
+            onMouseDown={(e) => e.preventDefault()} onClick={() => onInsert(k)}>
+            {k}
+          </Button>
+        ))}
+      </div>
+    ))}
+    <div className="flex gap-2 w-full justify-center mt-1.5">
+      <Button variant="ghost" onClick={onClearVars}
+        onMouseDown={(e) => e.preventDefault()}
+        className="text-destructive hover:text-destructive hover:bg-destructive/10 h-9 px-4 text-xs font-semibold">
+        Clear Saved Variables
+      </Button>
+    </div>
+  </div>
+);
+
+
+
+// --- MATH ENGINE SANDBOX COMPONENT ---
+
+const TokenBadge = ({ token }) => {
+  const styles = {
+    NUMBER: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/25',
+    IDENTIFIER: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/25',
+    OPERATOR: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/25'
+  };
+  return (
+    <div className={cn("px-2.5 py-1 rounded-md text-xs font-mono border flex flex-col items-center gap-0.5", styles[token.type] || "bg-muted text-muted-foreground")}>
+      <span className="text-[10px] opacity-60 font-semibold tracking-wider uppercase">{token.type}</span>
+      <span className="text-sm font-bold">{token.value}</span>
+    </div>
+  );
+};
+
+const EngineSandbox = ({ vars, setVars, radMode, setRadMode }) => {
+  const [expr, setExpr] = useState('a = 5 * sin(pi / 4)');
+  const [customVarName, setCustomVarName] = useState('');
+  const [customVarValue, setCustomVarValue] = useState('');
+
+  // Generate tokens live
+  let tokens = [];
+  let implicitTokens = [];
+  let parsingError = null;
+  let parsedResult = null;
+  let updatedVars = {};
+
+  try {
+    if (expr.trim()) {
+      tokens = tokenize(expr);
+      implicitTokens = insertImplicitMultiplication(tokens);
+      const evalRes = evaluateExpression(expr, vars, radMode);
+      if (evalRes.error) {
+        parsingError = evalRes.error;
+      } else {
+        parsedResult = evalRes.result;
+        updatedVars = evalRes.updatedVars;
+      }
+    }
+  } catch (err) {
+    parsingError = err.message;
+  }
+
+  const handleApplyVariables = () => {
+    if (Object.keys(updatedVars).length > 0) {
+      setVars(prev => ({ ...prev, ...updatedVars }));
+    } else if (parsedResult !== null && !isNaN(parsedResult)) {
+      setVars(prev => ({ ...prev, ans: parsedResult }));
+    }
+  };
+
+  const handleAddCustomVar = (e) => {
+    e.preventDefault();
+    if (!customVarName.trim() || !customVarValue.trim()) return;
+    const val = parseFloat(customVarValue);
+    if (!isNaN(val)) {
+      setVars(prev => ({ ...prev, [customVarName.trim()]: val }));
+      setCustomVarName('');
+      setCustomVarValue('');
+    }
+  };
+
+  const handleRemoveVar = (key) => {
+    const updated = { ...vars };
+    delete updated[key];
+    setVars(updated);
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4 sm:p-6">
+      {/* Sandbox Controller */}
+      <div className="lg:col-span-2 space-y-5">
+        <div className="bg-card border border-border/80 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="font-bold text-sm tracking-wide text-foreground/90 flex items-center gap-2">
+              <Terminal className="w-4 h-4 text-primary" /> Math Parser Input
+            </h3>
+            <div className="flex gap-1.5 bg-muted p-1 rounded-lg text-xs">
+              <button onClick={() => setRadMode(true)} className={cn("px-2.5 py-1 rounded-md font-semibold transition-all", radMode ? "bg-background text-foreground shadow-xs" : "text-muted-foreground")}>RAD</button>
+              <button onClick={() => setRadMode(false)} className={cn("px-2.5 py-1 rounded-md font-semibold transition-all", !radMode ? "bg-background text-foreground shadow-xs" : "text-muted-foreground")}>DEG</button>
             </div>
-            <div class="stat-item">
-                <div class="number">500K+</div>
-                <div class="label">Active Users</div>
+          </div>
+          
+          <div className="relative">
+            <input
+              type="text"
+              value={expr}
+              onChange={e => setExpr(e.target.value)}
+              placeholder="e.g. 10 * cos(pi) or x = 12"
+              className="w-full p-4 font-mono text-lg bg-background/50 border border-border/80 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none transition-all pr-12"
+            />
+            {expr && (
+              <button 
+                onClick={() => setExpr('')} 
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-md text-xs text-muted-foreground"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          {/* Realtime Output Banner */}
+          <div className="p-4 rounded-xl border border-border bg-muted/25 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div>
+              <div className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">Calculated Output</div>
+              {parsingError ? (
+                <div className="text-destructive font-mono text-sm mt-0.5">{parsingError}</div>
+              ) : parsedResult !== null ? (
+                <div className="text-xl font-bold font-mono text-primary mt-0.5">= {parsedResult}</div>
+              ) : (
+                <div className="text-muted-foreground/60 font-mono text-sm mt-0.5">Awaiting expression</div>
+              )}
             </div>
-            <div class="stat-item">
-                <div class="number">4.9★</div>
-                <div class="label">User Rating</div>
-            </div>
-            <div class="stat-item">
-                <div class="number">100%</div>
-                <div class="label">No Watermark</div>
-            </div>
+            {parsedResult !== null && !parsingError && (
+              <Button variant="primary" className="text-xs py-1.5 px-3 flex items-center gap-1.5" onClick={handleApplyVariables}>
+                <Sparkles className="w-3.5 h-3.5" /> Apply to Context Variables
+              </Button>
+            )}
+          </div>
         </div>
 
-        <!-- Main Card -->
-        <div class="main-card">
-
-            <!-- API Status Bar -->
-            <div class="api-status-bar">
-                <div class="status-icon"></div>
-                <span class="status-text"><i class="fas fa-check-circle"></i> API Connected</span>
-                <span class="status-detail">
-                    <i class="fas fa-key"></i> Using Instagram Graph API • 
-                    <i class="fas fa-shield-alt"></i> Secure
-                </span>
-            </div>
-
-            <div class="section-title">
-                <i class="fas fa-download"></i> Paste Instagram URL
-            </div>
-
-            <!-- URL Input -->
-            <div class="url-input-group">
-                <input type="text" id="urlInput" placeholder="https://www.instagram.com/p/..." value="https://www.instagram.com/p/C7YxTkOKl1s/">
-                <button class="btn-primary" id="fetchBtn">
-                    <i class="fas fa-search"></i> Fetch & Download
-                </button>
-            </div>
-
-            <!-- Quick Examples -->
-            <div class="quick-section">
-                <span class="label"><i class="fas fa-bolt"></i> Try:</span>
-                <button class="quick-link" data-url="https://www.instagram.com/p/C7YxTkOKl1s/">
-                    <i class="fas fa-image"></i> Photo
-                </button>
-                <button class="quick-link" data-url="https://www.instagram.com/reel/C8XpLpNIVwV/">
-                    <i class="fas fa-video"></i> Reel
-                </button>
-                <button class="quick-link" data-url="https://www.instagram.com/p/C8XqLpNIVwV/">
-                    <i class="fas fa-images"></i> Carousel
-                </button>
-                <button class="quick-link" data-url="https://www.instagram.com/stories/instagram/123456789/">
-                    <i class="fas fa-clock"></i> Story
-                </button>
-            </div>
-
-            <!-- Result Area -->
-            <div id="resultArea">
-                <div class="status-bar">
-                    <div id="statusBadge" class="status">⏳ Processing...</div>
+        {/* Tokenizer Visualizer */}
+        <div className="bg-card border border-border/80 rounded-2xl p-5 shadow-sm space-y-4">
+          <h3 className="font-bold text-sm tracking-wide text-foreground/90 flex items-center gap-2">
+            <Cpu className="w-4 h-4 text-cyan-500" /> Tokenizer Stream (Lexical Analysis)
+          </h3>
+          
+          {tokens.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground/60 text-sm italic">Type an expression to examine generated lexical tokens.</div>
+          ) : (
+            <div className="space-y-4.5">
+              <div>
+                <div className="text-xs font-semibold text-muted-foreground mb-2 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" /> Stage 1: Raw Tokens ({tokens.length})
                 </div>
-                <div class="preview-box" id="previewBox">
-                    <div class="placeholder">
-                        <i class="fab fa-instagram"></i>
-                        <span>Your Instagram content will appear here</span>
+                <div className="flex flex-wrap gap-2 p-3.5 bg-background/40 border border-border/60 rounded-xl">
+                  {tokens.map((tok, index) => <TokenBadge key={index} token={tok} />)}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-xs font-semibold text-muted-foreground mb-2 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" /> Stage 2: Implicit Multiplication Inserted ({implicitTokens.length})
+                </div>
+                <div className="flex flex-wrap gap-2 p-3.5 bg-background/40 border border-border/60 rounded-xl">
+                  {implicitTokens.map((tok, index) => <TokenBadge key={index} token={tok} />)}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Variables Sandbox Sidebar */}
+      <div className="space-y-5">
+        <div className="bg-card border border-border/80 rounded-2xl p-5 shadow-sm space-y-4.5">
+          <h3 className="font-bold text-sm tracking-wide text-foreground/90 flex items-center gap-2 border-b pb-2">
+            <Variable className="w-4 h-4 text-indigo-500" /> Active Math Context
+          </h3>
+          
+          {/* Add Variable Form */}
+          <form onSubmit={handleAddCustomVar} className="space-y-2">
+            <div className="text-xs font-semibold text-muted-foreground">Register Custom Variable</div>
+            <div className="flex gap-2">
+              <input 
+                type="text" 
+                placeholder="Name" 
+                value={customVarName}
+                onChange={e => setCustomVarName(e.target.value)}
+                className="w-1/3 px-2.5 py-1.5 text-xs bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+              <input 
+                type="number" 
+                step="any"
+                placeholder="Value" 
+                value={customVarValue}
+                onChange={e => setCustomVarValue(e.target.value)}
+                className="w-2/3 px-2.5 py-1.5 text-xs bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <button type="submit" className="w-full py-1.5 bg-secondary hover:bg-secondary/80 text-secondary-foreground text-xs font-semibold rounded-lg transition-colors border">
+              Inject Variable
+            </button>
+          </form>
+
+          {/* Active Variable List */}
+          <div className="space-y-2">
+            <div className="text-xs font-semibold text-muted-foreground">Registered Keys</div>
+            {Object.keys(vars).length === 0 ? (
+              <div className="text-xs text-muted-foreground/50 italic py-2 text-center border border-dashed rounded-lg">No custom variables defined.</div>
+            ) : (
+              <div className="divide-y max-h-48 overflow-y-auto pr-1">
+                {Object.entries(vars).map(([k, v]) => (
+                  <div key={k} className="flex justify-between items-center py-2 text-xs font-mono">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      <span className="font-bold text-foreground">{k}</span>
+                      <span className="text-muted-foreground">=</span>
+                      <span className="text-indigo-600 dark:text-indigo-400 font-bold">{v}</span>
                     </div>
-                </div>
-                <div class="download-actions">
-                    <button class="btn-download" id="downloadBtn" disabled>
-                        <i class="fas fa-download"></i> Download
+                    <button 
+                      type="button" 
+                      onClick={() => handleRemoveVar(k)} 
+                      className="text-destructive hover:bg-destructive/10 px-1.5 py-0.5 rounded text-[10px]"
+                    >
+                      Delete
                     </button>
-                    <button class="btn-secondary" id="copyBtn">
-                        <i class="fas fa-copy"></i> Copy URL
-                    </button>
-                </div>
-            </div>
-
-            <!-- Features -->
-            <div class="features">
-                <div class="feature-item">
-                    <i class="fas fa-water"></i>
-                    <h5>No Watermark</h5>
-                    <p>Clean content, no logo</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-hdmi"></i>
-                    <h5>HD Quality</h5>
-                    <p>High resolution download</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-bolt"></i>
-                    <h5>Fast & Free</h5>
-                    <p>Instant downloads</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h5>Mobile Ready</h5>
-                    <p>Works on all devices</p>
-                </div>
-            </div>
-
-            <!-- Hyperlink Section -->
-            <div class="hyperlink-section">
-                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-instagram ig-icon"></i> Instagram
-                </a>
-                <a href="https://www.instagram.com/reels" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-video" style="color:#f472b6;"></i> Reels
-                </a>
-                <a href="https://www.instagram.com/explore" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-compass" style="color:#60a5fa;"></i> Explore
-                </a>
-                <a href="https://www.instagram.com/stories" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-clock" style="color:#fbbf24;"></i> Stories
-                </a>
-                <a href="https://www.instagram.com/direct/inbox" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-envelope" style="color:#34d399;"></i> Messages
-                </a>
-                <a href="https://developers.facebook.com/docs/instagram-basic-display-api/" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-code" style="color:#a78bfa;"></i> API Docs
-                </a>
-                <a href="https://www.instagram.com/accounts/login/" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-sign-in-alt" style="color:#94a3b8;"></i> Login
-                </a>
-            </div>
-
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <span><i class="fas fa-shield-alt"></i> No data stored</span>
-            <span><i class="fas fa-check-circle"></i> 100% free tool</span>
-            <span><i class="fas fa-lock"></i> Privacy first</span>
-            <span><i class="fas fa-heart" style="color:#e1306c;"></i> Made with love</span>
+        {/* Math Engine info */}
+        <div className="bg-indigo-500/5 border border-indigo-500/10 rounded-2xl p-5 space-y-3">
+          <h4 className="text-xs font-bold text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5 uppercase tracking-wide">
+            <Info className="w-3.5 h-3.5" /> Engine Architecture
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            The mathematical runtime implements an LL(1) recursive-descent syntax parser. Formulas are converted into token packets, augmented with auto-multipliers, and processed cleanly following algebraic hierarchies (parentheses, exponents, postfix, trigonometric, then summation).
+          </p>
         </div>
+      </div>
+    </div>
+  );
+};
+
+
+
+// --- SYNTAX HIGHLIGHTER UTILITY ---
+
+const highlightCode = (code, lang) => {
+  if (!code) return '';
+  let escaped = code
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  
+  if (lang === 'css') {
+    return escaped
+      .replace(/(@\w+)/g, '<span class="text-pink-400">$1</span>')
+      .replace(/(:\w+)/g, '<span class="text-blue-400">$1</span>')
+      .replace(/(--\w+)/g, '<span class="text-cyan-400">$1</span>');
+  }
+  
+  // Highlighting javascript/typescript
+  const keywords = /\b(const|let|var|function|return|import|export|from|class|constructor|this|if|else|while|for|switch|case|break|default|new|throw|try|catch|type|interface|any|string|number)\b/g;
+  escaped = escaped.replace(keywords, '<span class="text-indigo-400 font-semibold">$1</span>');
+  
+  // numbers
+  escaped = escaped.replace(/\b(\d+(\.\d+)?)\b/g, '<span class="text-amber-400">$1</span>');
+  
+  // comments
+  escaped = escaped.replace(/(\/\/.*)/g, '<span class="text-emerald-500 italic">$1</span>');
+  escaped = escaped.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="text-emerald-500 italic">$1</span>');
+
+  // strings
+  escaped = escaped.replace(/(['"`])(.*?)\1/g, '<span class="text-teal-400">\'$2\'</span>');
+  
+  return escaped;
+};
+
+// --- CODE EXPLORER COMPONENT ---
+
+const CodeExplorer = ({ defaultActiveFile = 'App.tsx', onSelectCalculatorTab }) => {
+  const [activeFile, setActiveFile] = useState(defaultActiveFile);
+  const [copied, setCopied] = useState(false);
+
+  const fileData = FILES_DATABASE[activeFile];
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(fileData.code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-4 border border-border/80 rounded-2xl bg-card overflow-hidden shadow-sm min-h-[580px]">
+      {/* File Tree Left Navigation */}
+      <div className="border-r border-border/80 bg-muted/20 p-4 space-y-4">
+        <div>
+          <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Project Workspace</h3>
+          <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
+            Click files below to inspect source codes. These files are integrated directly inside our single file environment.
+          </p>
+        </div>
+        
+        <div className="space-y-1">
+          {Object.keys(FILES_DATABASE).map(filename => {
+            const isActive = filename === activeFile;
+            return (
+              <button
+                key={filename}
+                onClick={() => { setActiveFile(filename); }}
+                className={cn(
+                  "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left text-xs transition-all",
+                  isActive 
+                    ? "bg-primary/10 text-primary font-semibold border-l-4 border-primary pl-2 shadow-xs" 
+                    : "text-foreground hover:bg-muted/80 hover:text-foreground"
+                )}
+              >
+                <div className="flex items-center gap-2">
+                  <FileCode className={cn("w-4 h-4", isActive ? "text-primary" : "text-muted-foreground")} />
+                  <span>{filename}</span>
+                </div>
+                <ChevronRight className="w-3 h-3 opacity-60" />
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="border-t border-border/80 pt-4 mt-4 space-y-3">
+          <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Engine Status</div>
+          <div className="bg-background border border-border rounded-xl p-3 space-y-2">
+            <div className="flex items-center gap-2 text-xs font-medium">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Active & Live</span>
+            </div>
+            <p className="text-[10px] text-muted-foreground">
+              Mathematical compilation has passed validation testing seamlessly. Ready to execute on calculations.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Code Viewer Viewport */}
+      <div className="lg:col-span-3 flex flex-col h-full min-h-[500px]">
+        {/* File Meta Header */}
+        <div className="flex justify-between items-center px-5 py-3.5 border-b border-border/80 bg-muted/10">
+          <div>
+            <div className="flex items-center gap-2">
+              <FileText className="w-4 h-4 text-primary" />
+              <span className="font-mono text-sm font-bold text-foreground">{activeFile}</span>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1 max-w-xl leading-relaxed">{fileData.description}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" className="text-xs py-1.5 px-3 flex items-center gap-1.5" onClick={handleCopy}>
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5 text-muted-foreground" />}
+              {copied ? 'Copied!' : 'Copy Code'}
+            </Button>
+          </div>
+        </div>
+
+        {/* Dynamic Syntax Highlighting Canvas */}
+        <div className="flex-1 bg-slate-950 text-slate-100 font-mono text-xs overflow-auto p-5 relative select-text leading-relaxed">
+          <pre className="whitespace-pre overflow-x-auto selection:bg-indigo-500/30">
+            <code 
+              dangerouslySetInnerHTML={{ __html: highlightCode(fileData.code, fileData.language) }} 
+            />
+          </pre>
+        </div>
+
+        {/* Action Bottom banner */}
+        <div className="p-4 border-t border-border/80 bg-muted/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div className="text-xs text-muted-foreground flex items-center gap-1.5">
+            <Info className="w-4 h-4 text-primary" />
+            <span>This code operates using Tailwind v4 custom components.</span>
+          </div>
+          {activeFile === 'App.tsx' && (
+            <Button variant="primary" className="text-xs py-1.5 px-3 flex items-center gap-1.5 shadow-sm" onClick={onSelectCalculatorTab}>
+              <Calculator className="w-3.5 h-3.5" /> Try Live Calculator
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+
+// --- MAIN PORTAL CONTROLLER ---
+
+export default function App() {
+  const [portalTab, setPortalTab] = useState('portal-calc'); // portal-calc, portal-sandbox, portal-code
+  const [activeCodeFile, setActiveCodeFile] = useState('App.tsx');
+  
+  // State elements mapped directly for computation
+  const [expression, setExpression]     = useState('');
+  const [history, setHistory]           = useState([]);
+  const [radMode, setRadMode]           = useState(true);
+  const [vars, setVars]                 = useState({});
+  const [tab, setTab]                   = useState('main'); // keypads: main, func, abc
+  const [precision, setPrecision]       = useState('full');
+  const [thousandsSep, setThousandsSep] = useState(true);
+  const [dark, setDark]                 = useState(false);
+  
+  // Undo & Redo History System State
+  const [undoStack, setUndoStack]       = useState(['']);
+  const [undoIndex, setUndoIndex]       = useState(0);
+
+  const inputRef      = useRef(null);
+  const historyEndRef = useRef(null);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark);
+  }, [dark]);
+
+  useEffect(() => {
+    historyEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [history]);
+
+  const liveEval = evaluateExpression(expression, vars, radMode);
+
+  const updateExpression = (newExpr) => {
+    setExpression(newExpr);
+    const newStack = undoStack.slice(0, undoIndex + 1);
+    newStack.push(newExpr);
+    setUndoStack(newStack);
+    setUndoIndex(newStack.length - 1);
+  };
+
+  const handleUndo = () => {
+    if (undoIndex > 0) {
+      setUndoIndex(undoIndex - 1);
+      setExpression(undoStack[undoIndex - 1]);
+    }
+  };
+
+  const handleRedo = () => {
+    if (undoIndex < undoStack.length - 1) {
+      setUndoIndex(undoIndex + 1);
+      setExpression(undoStack[undoIndex + 1]);
+    }
+  };
+
+  const insertAtCursor = (text) => {
+    const input = inputRef.current;
+    if (!input) return;
+    const start = input.selectionStart || 0;
+    const end   = input.selectionEnd   || 0;
+    const newVal = expression.slice(0, start) + text + expression.slice(end);
+    updateExpression(newVal);
+    setTimeout(() => {
+      input.setSelectionRange(start + text.length, start + text.length);
+      input.focus();
+    }, 0);
+  };
+
+  const evaluateAndPushHistory = () => {
+    const { result, error, updatedVars } = evaluateExpression(expression, vars, radMode);
+    if (!error && result !== undefined && !isNaN(result)) {
+      if (updatedVars) setVars(prev => ({ ...prev, ...updatedVars }));
+      setHistory(prev => [...prev, { expr: expression, result }]);
+      setVars(prev => ({ ...prev, ans: result }));
+      updateExpression(formatResult(result, precision, thousandsSep).replace(/,/g, ''));
+    }
+  };
+
+  const handleAction = (action) => {
+    const input = inputRef.current;
+    if (!input) return;
+    if (action === 'left') {
+      input.setSelectionRange(
+        Math.max(0, (input.selectionStart || 0) - 1),
+        Math.max(0, (input.selectionStart || 0) - 1)
+      );
+    } else if (action === 'right') {
+      input.setSelectionRange((input.selectionEnd || 0) + 1, (input.selectionEnd || 0) + 1);
+    } else if (action === 'backspace') {
+      const start = input.selectionStart || 0;
+      const end   = input.selectionEnd   || 0;
+      if (start === end && start > 0) {
+        updateExpression(expression.slice(0, start - 1) + expression.slice(end));
+        setTimeout(() => input.setSelectionRange(start - 1, start - 1), 0);
+      } else if (start !== end) {
+        updateExpression(expression.slice(0, start) + expression.slice(end));
+        setTimeout(() => input.setSelectionRange(start, start), 0);
+      }
+    } else if (action === 'eval') {
+      evaluateAndPushHistory();
+    }
+    input.focus();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') { updateExpression(''); return; }
+    if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); evaluateAndPushHistory(); return; }
+    const shortcuts = {
+      'p': 'π', 's': 'sin(', 'c': 'cos(', 't': 'tan(', 'l': 'log(', 'n': 'ln('
+    };
+    if (tab !== 'abc' && shortcuts[e.key] && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      insertAtCursor(shortcuts[e.key]);
+    }
+  };
+
+  const navigateToCodeTab = (filename) => {
+    setActiveCodeFile(filename);
+    setPortalTab('portal-code');
+  };
+
+  return (
+    <div className="min-h-screen bg-neutral-50 dark:bg-zinc-950 text-foreground transition-colors duration-300 selection:bg-primary/20">
+      
+      {/* Global CSS Style Variable Override Injection */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        :root {
+          --background: 0 0% 100%;
+          --foreground: 240 10% 3.9%;
+          --card: 0 0% 100%;
+          --card-foreground: 240 10% 3.9%;
+          --popover: 0 0% 100%;
+          --popover-foreground: 240 10% 3.9%;
+          --primary: 190 90% 40%;
+          --primary-foreground: 0 0% 100%;
+          --secondary: 240 4.8% 95.9%;
+          --secondary-foreground: 240 5.9% 10%;
+          --muted: 240 4.8% 95.9%;
+          --muted-foreground: 240 3.8% 46.1%;
+          --accent: 190 90% 40%;
+          --accent-foreground: 0 0% 100%;
+          --destructive: 0 84.2% 60.2%;
+          --destructive-foreground: 0 0% 98%;
+          --border: 240 5.9% 90%;
+          --input: 240 5.9% 90%;
+          --ring: 190 90% 40%;
+          --radius: 0.5rem;
+        }
+        .dark {
+          --background: 240 10% 3.9%;
+          --foreground: 0 0% 98%;
+          --card: 240 10% 3.9%;
+          --card-foreground: 0 0% 98%;
+          --popover: 240 10% 3.9%;
+          --popover-foreground: 0 0% 98%;
+          --primary: 190 90% 45%;
+          --primary-foreground: 240 10% 3.9%;
+          --secondary: 240 3.7% 15.9%;
+          --secondary-foreground: 0 0% 98%;
+          --muted: 240 3.7% 15.9%;
+          --muted-foreground: 240 5% 64.9%;
+          --accent: 190 90% 45%;
+          --accent-foreground: 240 10% 3.9%;
+          --destructive: 0 62.8% 30.6%;
+          --destructive-foreground: 0 0% 98%;
+          --border: 240 3.7% 15.9%;
+          --input: 240 3.7% 15.9%;
+          --ring: 190 90% 45%;
+        }
+      `}} />
+
+      {/* Modern Developer Header */}
+      <header className="border-b border-border/60 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md sticky top-0 z-30 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20 shadow-xs">
+              <Calculator className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-sm font-bold tracking-tight text-foreground flex items-center gap-1.5">
+                Precision Scientific <span className="text-[10px] bg-primary/10 text-primary border border-primary/20 px-1.5 py-0.5 rounded-md font-semibold tracking-normal uppercase">v1.2</span>
+              </h1>
+              <p className="text-[10px] text-muted-foreground font-medium">Mathematical Lexer Compiler & Evaluation Portal</p>
+            </div>
+          </div>
+
+          {/* Tab Navigation Menu */}
+          <nav className="hidden md:flex space-x-1.5 bg-muted/60 p-1 rounded-xl border border-border/40">
+            <button
+              onClick={() => setPortalTab('portal-calc')}
+              className={cn(
+                "px-4 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer",
+                portalTab === 'portal-calc' ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Calculator className="w-3.5 h-3.5" /> 🧮 Interactive Calculator
+            </button>
+            <button
+              onClick={() => setPortalTab('portal-sandbox')}
+              className={cn(
+                "px-4 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer",
+                portalTab === 'portal-sandbox' ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Cpu className="w-3.5 h-3.5" /> ⚙️ Math Engine Sandbox
+            </button>
+            <button
+              onClick={() => setPortalTab('portal-code')}
+              className={cn(
+                "px-4 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer",
+                portalTab === 'portal-code' ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Code className="w-3.5 h-3.5" /> 📄 Live Code Viewer
+            </button>
+          </nav>
+
+          <div className="flex items-center gap-3">
+            {/* Quick Link Buttons (As requested by user: App.tsx, math.ts, index.css, main.tsx) */}
+            <div className="hidden lg:flex items-center gap-1 text-[11px] font-semibold bg-muted/30 p-1.5 border rounded-xl">
+              <span className="text-[10px] text-muted-foreground uppercase px-2 font-bold">Files:</span>
+              <button onClick={() => navigateToCodeTab('App.tsx')} className="hover:bg-background px-2 py-1 rounded-md text-muted-foreground hover:text-primary transition-all font-mono">App.tsx</button>
+              <span className="text-muted-foreground/30">|</span>
+              <button onClick={() => navigateToCodeTab('math.ts')} className="hover:bg-background px-2 py-1 rounded-md text-muted-foreground hover:text-primary transition-all font-mono">math.ts</button>
+              <span className="text-muted-foreground/30">|</span>
+              <button onClick={() => navigateToCodeTab('index.css')} className="hover:bg-background px-2 py-1 rounded-md text-muted-foreground hover:text-primary transition-all font-mono">index.css</button>
+              <span className="text-muted-foreground/30">|</span>
+              <button onClick={() => navigateToCodeTab('main.tsx')} className="hover:bg-background px-2 py-1 rounded-md text-muted-foreground hover:text-primary transition-all font-mono">main.tsx</button>
+            </div>
+
+            {/* Config & Theme toggler */}
+            <div className="flex items-center gap-1 border-l pl-3 border-border/80">
+              <button 
+                onClick={() => setDark(!dark)}
+                className="p-2 hover:bg-muted/60 text-muted-foreground hover:text-foreground rounded-full transition-all cursor-pointer"
+                title="Toggle visual style theme"
+              >
+                {dark ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-indigo-500" />}
+              </button>
+
+              <SettingsPopover 
+                precision={precision} setPrecision={setPrecision}
+                thousandsSep={thousandsSep} setThousandsSep={setThousandsSep}
+                dark={dark} setDark={setDark}
+              />
+            </div>
+          </div>
+        </div>
+        
+        {/* Mobile Submenu Navigation Tab Bar */}
+        <div className="md:hidden flex border-t border-border/40 divide-x bg-white dark:bg-zinc-900 justify-around text-xs select-none">
+          <button 
+            onClick={() => setPortalTab('portal-calc')} 
+            className={cn("w-full py-3.5 font-semibold text-center flex items-center justify-center gap-1.5", portalTab === 'portal-calc' ? "text-primary bg-primary/5" : "text-muted-foreground")}
+          >
+            <Calculator className="w-3.5 h-3.5" /> Calc
+          </button>
+          <button 
+            onClick={() => setPortalTab('portal-sandbox')} 
+            className={cn("w-full py-3.5 font-semibold text-center flex items-center justify-center gap-1.5", portalTab === 'portal-sandbox' ? "text-primary bg-primary/5" : "text-muted-foreground")}
+          >
+            <Cpu className="w-3.5 h-3.5" /> Sandbox
+          </button>
+          <button 
+            onClick={() => setPortalTab('portal-code')} 
+            className={cn("w-full py-3.5 font-semibold text-center flex items-center justify-center gap-1.5", portalTab === 'portal-code' ? "text-primary bg-primary/5" : "text-muted-foreground")}
+          >
+            <Code className="w-3.5 h-3.5" /> Code View
+          </button>
+        </div>
+      </header>
+
+      {/* Main Viewport Container */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        
+        {/* Quick Info Hub */}
+        <div className="bg-gradient-to-r from-primary/10 via-indigo-500/5 to-transparent border border-primary/15 rounded-2xl p-5 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div className="space-y-1">
+            <h2 className="text-sm font-bold flex items-center gap-2 text-foreground/90">
+              <Sparkles className="w-4 h-4 text-primary animate-pulse" /> Welcome to the Interactive Science & Code Portal
+            </h2>
+            <p className="text-xs text-muted-foreground leading-relaxed max-w-3xl">
+              This environment compiles standard HTML and React layouts seamlessly. You can test custom computational limits, inspect algebraic parser lexing streams, or copy production-ready source code with the quick explorer below.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 shrink-0">
+            <button 
+              onClick={() => navigateToCodeTab('App.tsx')} 
+              className="text-xs font-semibold px-3 py-1.5 bg-background border border-border text-foreground hover:text-primary transition-all rounded-lg flex items-center gap-1 shadow-xs"
+            >
+              App.tsx <ExternalLink className="w-3 h-3" />
+            </button>
+            <button 
+              onClick={() => navigateToCodeTab('math.ts')} 
+              className="text-xs font-semibold px-3 py-1.5 bg-background border border-border text-foreground hover:text-primary transition-all rounded-lg flex items-center gap-1 shadow-xs"
+            >
+              math.ts <ExternalLink className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Viewport Renderer */}
+        <div className="transition-all duration-300">
+          
+          {/* TAB 1: LIVE INTERACTIVE CALCULATOR (Your App.tsx code styled with premium additions) */}
+          {portalTab === 'portal-calc' && (
+            <div className="flex items-center justify-center py-4">
+              <div className="w-full sm:max-w-[560px] bg-card border border-border/80 shadow-xl rounded-2xl flex flex-col overflow-hidden relative">
+                
+                {/* Internal Header */}
+                <div className="flex items-center justify-between p-4 border-b bg-muted/20">
+                  <div className="text-[10px] font-bold tracking-widest text-muted-foreground flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    PRECISION SCIENTIFIC RUNTIME
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 border rounded bg-background">RAD Mode</span>
+                  </div>
+                </div>
+
+                {/* History Block */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-card/40 flex flex-col justify-end min-h-[140px] max-h-[180px] border-b border-border/40">
+                  {history.length === 0 && (
+                    <div className="text-center text-muted-foreground text-xs my-auto opacity-50 italic">Expression history timeline empty.</div>
+                  )}
+                  {history.map((item, i) => (
+                    <div key={i}
+                      className="text-right cursor-pointer hover:bg-muted/50 p-2 rounded-lg transition-colors group"
+                      onClick={() => updateExpression(item.expr)}
+                    >
+                      <div className="text-muted-foreground text-xs font-mono group-hover:text-foreground transition-all">{item.expr}</div>
+                      <div className="text-foreground text-lg font-mono mt-0.5 font-bold">= {formatResult(item.result, precision, thousandsSep)}</div>
+                    </div>
+                  ))}
+                  <div ref={historyEndRef} />
+                </div>
+
+                {/* Main Display Input Block */}
+                <div className="p-5 border-b bg-background/50 relative shadow-[inset_0_-2px_10px_rgba(0,0,0,0.01)]">
+                  <input
+                    ref={inputRef}
+                    value={expression}
+                    onChange={e => updateExpression(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="w-full bg-transparent text-right text-3xl sm:text-4xl font-mono outline-none placeholder:text-muted/30 text-foreground"
+                    placeholder="0"
+                    autoFocus
+                    spellCheck={false}
+                  />
+                  <div className="text-right text-base font-mono min-h-[1.75rem] mt-2 font-semibold">
+                    {liveEval.error ? (
+                      <span className="text-destructive text-xs bg-destructive/10 px-2 py-1 rounded-md">{liveEval.error}</span>
+                    ) : liveEval.result !== undefined && !isNaN(liveEval.result) ? (
+                      <span className="text-primary">= {formatResult(liveEval.result, precision, thousandsSep)}</span>
+                    ) : ''}
+                  </div>
+                </div>
+
+                {/* Toolbar controls */}
+                <div className="flex items-center justify-between px-3 py-2 bg-muted/40 border-b overflow-x-auto gap-2">
+                  <div className="flex space-x-1 bg-muted/80 p-0.5 rounded-lg shrink-0">
+                    {['main', 'func', 'abc'].map(t => (
+                      <button key={t}
+                        onClick={() => { setTab(t); inputRef.current?.focus(); }}
+                        className={cn(
+                          "px-2.5 py-1 text-xs rounded-md capitalize transition-all font-semibold cursor-pointer",
+                          tab === t ? "bg-background shadow-xs text-foreground" : "text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <div className="flex bg-muted/80 p-0.5 rounded-lg">
+                      <button
+                        onClick={() => { setRadMode(true); inputRef.current?.focus(); }}
+                        className={cn("px-2 py-1 text-[10px] rounded-md font-bold transition-all cursor-pointer", radMode ? "bg-background shadow-xs text-foreground" : "text-muted-foreground")}
+                      >RAD</button>
+                      <button
+                        onClick={() => { setRadMode(false); inputRef.current?.focus(); }}
+                        className={cn("px-2 py-1 text-[10px] rounded-md font-bold transition-all cursor-pointer", !radMode ? "bg-background shadow-xs text-foreground" : "text-muted-foreground")}
+                      >DEG</button>
+                    </div>
+                    <div className="h-5 w-px bg-border"></div>
+                    <Button variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={handleUndo} disabled={undoIndex <= 0}>
+                      <Undo2 className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button variant="ghost" className="h-7 w-7 p-0 rounded-full" onClick={handleRedo} disabled={undoIndex >= undoStack.length - 1}>
+                      <Redo2 className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button variant="ghost"
+                      className="h-7 px-2.5 text-[10px] font-bold text-destructive hover:text-destructive hover:bg-destructive/10 rounded-md"
+                      onClick={() => updateExpression('')}>
+                      CLEAR
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Keypad block container */}
+                <div className="p-3 bg-muted/15 h-[300px] sm:h-[330px]">
+                  {tab === 'main' && <MainKeypad onInsert={insertAtCursor} onAction={handleAction} />}
+                  {tab === 'func' && <FuncKeypad onInsert={insertAtCursor} />}
+                  {tab === 'abc'  && <AbcKeypad  onInsert={insertAtCursor} onClearVars={() => { setVars({}); inputRef.current?.focus(); }} />}
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: INTERACTIVE MATH ENGINE LEXER & SANDBOX */}
+          {portalTab === 'portal-sandbox' && (
+            <EngineSandbox 
+              vars={vars} 
+              setVars={setVars} 
+              radMode={radMode} 
+              setRadMode={setRadMode} 
+            />
+          )}
+
+          {/* TAB 3: LIVE CODE VIEWER & EXPLORER WITH EMBEDDED CODES */}
+          {portalTab === 'portal-code' && (
+            <CodeExplorer 
+              defaultActiveFile={activeCodeFile} 
+              onSelectCalculatorTab={() => setPortalTab('portal-calc')} 
+            />
+          )}
+
+        </div>
+      </main>
+
+      {/* Modern Dashboard Footer */}
+      <footer className="border-t border-border/60 bg-white dark:bg-zinc-900 py-8 mt-12 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-muted-foreground space-y-2">
+          <div className="flex items-center justify-center gap-1 text-[11px] font-semibold text-foreground/80">
+            <span>Powered by</span>
+            <span className="text-primary font-bold">Custom Math Parser</span>
+            <span>&amp; React Tailwind CSS UI Framework.</span>
+          </div>
+          <p>© 2026 Scientific Calculator Developer Hub. Created as an immersive component dashboard.</p>
+        </div>
+      </footer>
 
     </div>
-
-    <script>
-        (function() {
-            // ============================================
-            // 🔑 INSTAGRAM API KEY - PRE-CONFIGURED
-            // ============================================
-            const INSTAGRAM_API_KEY = 'IGQVJYR3ZAGb0VWd0FuRWJMMm8tZA3RycXA1R19DNjBHaXpld2pOZADUzR3BlS3FhSmd3R2pMa3hBZAzdndldlY1hyRl9KdVFYR1R5TnNJX0JtY2xYaXZAITWJycVJpU0dZAczBpNlBKVllnakpMdDY3RgZDZD';
-            // ============================================
-
-            // DOM references
-            const urlInput = document.getElementById('urlInput');
-            const fetchBtn = document.getElementById('fetchBtn');
-            const resultArea = document.getElementById('resultArea');
-            const statusBadge = document.getElementById('statusBadge');
-            const previewBox = document.getElementById('previewBox');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const copyBtn = document.getElementById('copyBtn');
-
-            let currentData = null;
-            let apiKey = INSTAGRAM_API_KEY;
-
-            // Quick link clicks
-            document.querySelectorAll('.quick-link').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const url = this.dataset.url;
-                    if (url) {
-                        urlInput.value = url;
-                        setTimeout(() => fetchContent(), 300);
-                    }
-                });
-            });
-
-            // Copy URL
-            copyBtn.addEventListener('click', function() {
-                const url = urlInput.value.trim();
-                if (url) {
-                    navigator.clipboard.writeText(url).then(() => {
-                        const original = this.innerHTML;
-                        this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                        setTimeout(() => { this.innerHTML = original; }, 2000);
-                    }).catch(() => {
-                        const textArea = document.createElement('textarea');
-                        textArea.value = url;
-                        document.body.appendChild(textArea);
-                        textArea.select();
-                        document.execCommand('copy');
-                        document.body.removeChild(textArea);
-                        alert('URL copied!');
-                    });
-                }
-            });
-
-            // Extract media ID from Instagram URL
-            function extractMediaId(url) {
-                const patterns = [
-                    /\/p\/([A-Za-z0-9_-]+)/,
-                    /\/reel\/([A-Za-z0-9_-]+)/,
-                    /\/tv\/([A-Za-z0-9_-]+)/,
-                    /\/stories\/([A-Za-z0-9_-]+)\/([0-9]+)/
-                ];
-                
-                for (const pattern of patterns) {
-                    const match = url.match(pattern);
-                    if (match) {
-                        return match[1] || match[2];
-                    }
-                }
-                return url.split('/').pop().split('?')[0];
-            }
-
-            // Main fetch function
-            async function fetchContent() {
-                const url = urlInput.value.trim();
-                if (!url) {
-                    alert('Please enter an Instagram URL.');
-                    return;
-                }
-
-                if (!url.includes('instagram.com')) {
-                    alert('Please enter a valid Instagram URL.');
-                    return;
-                }
-
-                // Show loading
-                resultArea.classList.add('show');
-                statusBadge.className = 'status loading';
-                statusBadge.textContent = '⏳ Fetching from Instagram...';
-                previewBox.innerHTML = `
-                    <div class="placeholder">
-                        <div class="loader-spinner"></div>
-                        <span>Fetching Instagram content...</span>
-                    </div>
-                `;
-                downloadBtn.disabled = true;
-
-                try {
-                    const mediaId = extractMediaId(url);
-                    
-                    // Try Graph API first
-                    let apiUrl = `https://graph.instagram.com/${mediaId}?fields=id,media_type,media_url,permalink,thumbnail_url,caption,username,timestamp&access_token=${apiKey}`;
-
-                    let response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`);
-                    
-                    if (!response.ok) {
-                        throw new Error('Graph API failed');
-                    }
-
-                    let data = await response
+  );
+}
